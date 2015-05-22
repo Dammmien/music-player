@@ -1,0 +1,11 @@
+<div id="container">
+
+    <table class="tracks-list">
+        <tr ng-repeat="track in model.tracks | filter:model.filter" ng-click="onAddTrackToWaitingTracks( track )">
+            <td>{{track.title}}</td>
+            <td>{{track.album}}</td>
+            <td>{{track.artist}}</td>
+        </tr>
+    </table>
+
+</div>
