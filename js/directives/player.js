@@ -12,8 +12,6 @@ app.directive( 'player', function( Service ) {
 
         link: function( $scope, elements, attrs, ctrl ) {
 
-            console.log( elements );
-
             $scope.player = elements[ 0 ].children[ 0 ];
 
             $scope.model = Service.model;
@@ -21,8 +19,10 @@ app.directive( 'player', function( Service ) {
             $scope.$watch( function() {
                 return $scope.model.currentTrack
             }, function() {
-                $scope.player.src = $scope.model.currentTrack.url;
-                $scope.player.play();
+                if( $scope.model.currentTrack ){
+                    $scope.player.src = $scope.model.currentTrack.url;
+                    $scope.player.play();
+                }
             } );
 
             $scope.player.addEventListener( 'ended', function() {

@@ -4,13 +4,13 @@ app.service( 'Service', [ 'DriveService', '$http', function( DriveService, $http
 
         model: {
             tracks: [],
-            currentTrack: {},
+            currentTrack: null,
             waitingTracks: []
         },
 
         filterItems: function( items ) {
             this.items = items.filter( function( item ) {
-                return item.labels.trashed === false;
+                return item.labels.trashed === false && item.parents.length > 0;
             }, this );
         },
 
@@ -57,7 +57,7 @@ app.service( 'Service', [ 'DriveService', '$http', function( DriveService, $http
 
         setRootfolder: function() {
             this.rootFolder = this.folders.filter( function( item ) {
-                return item.parents[ 0 ].isRoot && item.title === 'Music';
+                return item.title === 'Music';
             }, this )[ 0 ];
         },
 

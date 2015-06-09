@@ -9,10 +9,7 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, DriveService ) {
     };
 
     $scope.onAddTrackToWaitingTracks = function( track ) {
-        if ( $scope.model.currentTrack.url === undefined )
-            $scope.model.currentTrack = track;
-        else
-            $scope.model.waitingTracks.push( track );
+        $scope.model.waitingTracks.push( track );
     };
 
     $scope.onPlayTrack = function( track ) {

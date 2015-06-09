@@ -1,7 +1,16 @@
-<div id="player-container">
+<div id="logo-container"></div>
+
+<div id="player-container" ng-show="model.currentTrack.title">
     <player></player>
 </div>
 
 <ul id="waiting-tracks-container">
-    <li ng-repeat="track in model.waitingTracks">{{track.title}} - {{track.artist}}</li>
+    <li ng-repeat="track in model.waitingTracks" class="waiting-track">
+        <div class="waiting-track-title">
+            {{track.title}}
+        </div>
+        <div class="waiting-track-artist">
+            {{track.artist}}
+        </div>
+    </li>
 </ul>

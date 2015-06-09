@@ -1,0 +1,25 @@
+.tracks-list{
+    width: 100%;
+    line-height: 45px;
+    border-collapse: collapse;
+    color: #222222;
+}
+
+.tracks-list tr:nth-child(odd){
+    background: #F5F5F5;
+}
+
+.tracks-list tr td{
+    padding: 0 0 0 15px
+}
+
+.tracks-list tr td .icon{
+    color: #666666;
+    font-size: 20px;
+    margin: 0 5px
+}
+
+.tracks-list tr td .icon:hover{
+    color: #222222;
+    cursor: pointer;
+}

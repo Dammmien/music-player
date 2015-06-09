@@ -1,14 +1,23 @@
 <audio id="audio-tag" ng-src="model.currentTrack.url"></audio>
 
-{{model.currentTrack.title}}
-</br>
-{{model.currentTrack.artist}}
+<div id="current-track-title">
+    {{model.currentTrack.title}}
+</div>
 
-<div>
+<div id="current-track-artist">
+    by {{model.currentTrack.artist}}
+</div>
+
+<div id="progress-bar-container" ng-if="player.currentTime && player.duration">
+    <div id="progress-bar" style="width:{{player.currentTime / player.duration * 100}}%"></div>
+</div>
+
+<div id="current-time" ng-if="player.currentTime">
     {{player.currentTime | formatTime}}
+</div>
+
+<div id="current-duration" ng-if="player.duration">
     {{player.duration | formatTime}}
 </div>
 
-<div id="progress-bar-container">
-    <div id="progress-bar" style="width:{{player.currentTime / player.duration * 100}}%"></div>
-</div>
+<div class="clear"></div>

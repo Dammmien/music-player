@@ -3,37 +3,27 @@ html,body{
     height: 100%;
     margin: 0;
     height: 0;
+    font-family: Arial;
 }
 
-#side-bar{
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    padding: 20px;
-    box-sizing: border-box;
-    background: #EEEEEE;
-    width: 300px;
+.clear{
+    clear: both;
 }
 
-#progress-bar-container{
-    height: 5px;
-    background: #999999;
-}
-
-#progress-bar{
-    height: 100%;
-    background: #333333;
+.icon{
+    color: #000000;
+    vertical-align: middle;
 }
 
 #top-bar{
     position: absolute;
     left: 300px;
+    border-left: 1px solid #333333;
     top: 0;
     right: 0;
     padding: 0 20px;
     box-sizing: border-box;
-    background: #123456;
+    background: #111111;
     height: 70px;
     line-height: 70px;
 }
@@ -45,17 +35,7 @@ html,body{
     top: 70px;
     bottom: 0;
     right: 0;
-    padding: 20px;
     box-sizing: border-box;
     background: #FFFFFF;
     overflow: auto;
-}
-
-.tracks-list{
-    width: 100%;
-    line-height: 40px;
-}
-
-.tracks-list tr td{
-    border-bottom: 1px solid #DDDDDD;
 }
