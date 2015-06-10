@@ -1,0 +1,30 @@
+#top-bar{
+    position: absolute;
+    left: 300px;
+    border-left: 1px solid #333333;
+    top: 0;
+    right: 0;
+    padding: 0 20px;
+    box-sizing: border-box;
+    background: #111111;
+    height: 70px;
+    line-height: 70px;
+}
+
+#search-input{
+    float: right;
+    border-radius: 3px;
+    padding: 8px 10px;
+    margin: 17px 0;
+    border:; 0;
+}
+
+.view-mode{
+    color: #666666;
+    margin: 0 20px 0 0;
+    cursor: pointer;
+}
+
+.view-mode.active{
+    color: #FFFFFF;
+}

@@ -13,21 +13,8 @@ html,body{
 .icon{
     color: #000000;
     vertical-align: middle;
+    cursor: pointer;
 }
-
-#top-bar{
-    position: absolute;
-    left: 300px;
-    border-left: 1px solid #333333;
-    top: 0;
-    right: 0;
-    padding: 0 20px;
-    box-sizing: border-box;
-    background: #111111;
-    height: 70px;
-    line-height: 70px;
-}
-
 
 #container{
     position: absolute;
@@ -36,6 +23,6 @@ html,body{
     bottom: 0;
     right: 0;
     box-sizing: border-box;
-    background: #FFFFFF;
+    background: #F5F5F5;
     overflow: auto;
 }

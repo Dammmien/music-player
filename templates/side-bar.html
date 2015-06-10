@@ -5,7 +5,7 @@
 </div>
 
 <ul id="waiting-tracks-container">
-    <li ng-repeat="track in model.waitingTracks" class="waiting-track">
+    <li ng-repeat="track in model.waitingTracks track by $index" class="waiting-track">
         <div class="waiting-track-title">
             {{track.title}}
         </div>

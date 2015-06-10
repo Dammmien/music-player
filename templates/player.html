@@ -8,7 +8,7 @@
     by {{model.currentTrack.artist}}
 </div>
 
-<div id="progress-bar-container" ng-if="player.currentTime && player.duration">
+<div id="progress-bar-container" ng-if="model.currentTrack">
     <div id="progress-bar" style="width:{{player.currentTime / player.duration * 100}}%"></div>
 </div>
 
@@ -18,6 +18,15 @@
 
 <div id="current-duration" ng-if="player.duration">
     {{player.duration | formatTime}}
+</div>
+
+<div id="player-button-bar">
+    <span class="icon icon-skip-previous" ng-class="model.playedTracks.length > 0 ? 'active' : 'deactive'" ng-click="onPrevious()"></span>
+
+    <span class="icon icon-play" ng-if="player.paused" ng-click="onPlay()"></span>
+    <span class="icon icon-pause" ng-if="!player.paused" ng-click="onPause()"></span>
+
+    <span class="icon icon-skip-next" ng-class="model.waitingTracks.length > 0 ? 'active' : 'deactive'" ng-click="onNext()"></span>
 </div>
 
 <div class="clear"></div>

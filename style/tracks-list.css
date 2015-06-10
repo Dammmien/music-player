@@ -6,7 +6,7 @@
 }
 
 .tracks-list tr:nth-child(odd){
-    background: #F5F5F5;
+    background: #FFFFFF;
 }
 
 .tracks-list tr td{
@@ -21,5 +21,4 @@
 
 .tracks-list tr td .icon:hover{
     color: #222222;
-    cursor: pointer;
 }

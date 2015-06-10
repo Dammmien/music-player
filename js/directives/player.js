@@ -19,7 +19,7 @@ app.directive( 'player', function( Service ) {
             $scope.$watch( function() {
                 return $scope.model.currentTrack
             }, function() {
-                if( $scope.model.currentTrack ){
+                if ( $scope.model.currentTrack ) {
                     $scope.player.src = $scope.model.currentTrack.url;
                     $scope.player.play();
                 }
@@ -27,13 +27,29 @@ app.directive( 'player', function( Service ) {
 
             $scope.player.addEventListener( 'ended', function() {
                 $scope.$apply( function() {
-                    $scope.model.currentTrack = $scope.model.waitingTracks.shift();
+                    Service.passToNextTrack();
                 } );
             } );
 
             $scope.player.addEventListener( 'timeupdate', function() {
                 $scope.$digest();
             } );
+
+            $scope.onPause = function() {
+                $scope.player.pause();
+            };
+
+            $scope.onPlay = function() {
+                $scope.player.play();
+            };
+
+            $scope.onPrevious = function() {
+                Service.passToPreviousTrack();
+            };
+
+            $scope.onNext = function() {
+                Service.passToNextTrack();
+            };
 
         }
 
