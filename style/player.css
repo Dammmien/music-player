@@ -5,7 +5,7 @@
     left: 0;
     right: 0;
     padding: 20px;
-    box-shadow: 0px 0px 10px 0px #111111;
+    box-shadow: 0px 0px 10px 0px #000000;
 }
 
 #player-button-bar{
@@ -17,7 +17,7 @@
     display: inline-block;
     width: 50px;
     line-height: 40px;
-    color: #DDDDDD;
+    color: #FFFFFF;
     font-size: 24px;
 }
 
@@ -26,7 +26,7 @@
 }
 
 #player-button-bar .icon.active:hover{
-    color: #FFFFFF;
+    color: #666666;
 }
 
 #player-button-bar .icon.deactive:hover{
@@ -40,13 +40,13 @@
 
 #progress-bar-container{
     height: 4px;
-    background: #333333;
+    background: #666666;
     margin: 15px 0;
 }
 
 #progress-bar{
     height: 100%;
-    background: #CCCCCC;
+    background: #FFFFFF;
 }
 
 #current-track-title,
@@ -57,20 +57,20 @@
 }
 
 #current-track-title{
-    font-size: 16px;
-    color: #DDDDDD;
+    font-size: 14px;
+    color: #FFFFFF;
 }
 
 #current-track-artist{
     font-size: 12px;
-    color: #666666;
+    color: #999999;
     margin: 3px 0 0 0;
 }
 
 #current-time,
 #current-duration{
     font-size: 10px;
-    color: #666666;
+    color: #999999;
     float: left;
 }
 

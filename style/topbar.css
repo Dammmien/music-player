@@ -16,13 +16,15 @@
     border-radius: 3px;
     padding: 8px 10px;
     margin: 17px 0;
-    border:; 0;
+    border: 0;
 }
 
 .view-mode{
     color: #666666;
     margin: 0 20px 0 0;
     cursor: pointer;
+    font-size: 12px;
+    text-transform: uppercase;
 }
 
 .view-mode.active{

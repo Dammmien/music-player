@@ -1,12 +1,14 @@
-app.controller( 'mainCtrl', function( $scope, $window, Service, DriveService, Database ) {
+app.controller( 'mainCtrl', function( $scope, $window, Service, DriveService, Model, Database ) {
 
-    $scope.model = Service.model;
+    $scope.model = Model;
 
     $window.initGapi = function() {
         DriveService.checkAuth( function() {
             Database.init( function( dbExist ) {
                 if ( !dbExist ) {
-                    Service.getTracks();
+                    Service.getTracks( function() {
+                        $scope.$apply();
+                    } );
                 } else {
                     Database.getAll( function( results ) {
                         $scope.model.tracks = results;
@@ -14,7 +16,7 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, DriveService, Da
                         $scope.$apply();
                     }.bind( this ) );
                 }
-            } )
+            } );
         } );
     };
 

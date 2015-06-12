@@ -1,25 +1,16 @@
-app.service( 'Service', [ 'DriveService', 'Database', '$http', function( DriveService, Database, $http ) {
+app.service( 'Service', [ 'DriveService', 'Database', 'Model', '$http', function( DriveService, Database, Model, $http ) {
 
     var service = {
 
-        model: {
-            tracks: [],
-            currentTrack: null,
-            playedTracks: [],
-            waitingTracks: [],
-            viewMode: 'tracks'
-        },
+        items: [],
 
-        filterItems: function( items ) {
-            this.items = items.filter( function( item ) {
-                return item.labels.trashed === false;
-            } );
-        },
+        rootFolders: [],
 
         findFolders: function() {
             this.folders = this.items.filter( function( item ) {
-                return item.fileSize === undefined;
-            } );
+                if ( item.title === 'Music' ) this.rootFolders.push( item.id );
+                return item.mimeType === 'application/vnd.google-apps.folder';
+            }, this );
         },
 
         findArtistFolders: function() {
@@ -37,19 +28,20 @@ app.service( 'Service', [ 'DriveService', 'Database', '$http', function( DriveSe
                 } ).forEach( function( albumFolder ) {
 
                     var albumTracks = this.items.filter( function( track ) {
-                        return track.parents.length > 0 && track.parents[ 0 ].id === albumFolder.id && [ 'mp3', 'flac', 'm3u' ].indexOf( track.fileExtension ) > -1;
+                        return track.parents.length > 0 && track.parents[ 0 ].id === albumFolder.id && track.fileExtension === 'mp3';
                     } );
 
                     albumTracks.forEach( function( track ) {
-                        this.model.tracks.push( {
+                        Model.tracks.push( {
                             title: track.title.replace( '.' + track.fileExtension, '' ),
                             id: track.id,
+                            labels: track.labels,
+                            shared: track.shared,
                             starred: track.labels.starred,
                             artist: artistFolder.title,
                             artistId: artistFolder.id,
                             album: albumFolder.title,
-                            albumId: albumFolder.id,
-                            url: track.downloadUrl.replace( '?e=download&gd=true', '' )
+                            albumId: albumFolder.id
                         } );
                     }, this );
 
@@ -57,87 +49,92 @@ app.service( 'Service', [ 'DriveService', 'Database', '$http', function( DriveSe
 
             }, this );
 
-            Database.addAll( this.model.tracks, this.setTracksByArtistAndAlbum.bind( this ) );
+            Database.addAll( Model.tracks, this.setTracksByArtistAndAlbum.bind( this ) );
         },
 
         setTracksByArtistAndAlbum: function() {
-            this.model.artistsList = _.groupBy( this.model.tracks, 'artist' );
-            this.model.albumsList = _.groupBy( this.model.tracks, 'album' );
-        },
+            var artistsDictionary = _.groupBy( Model.tracks, 'artist' );
+            var albumsDictionary = _.groupBy( Model.tracks, 'album' );
 
-        setRootfolders: function() {
-            this.rootFolders = this.folders.filter( function( item ) {
-                return item.title === 'Music';
-            } ).map( function( item ) {
-                return item.id
-            } );
+            Model.artistsList = [];
+            Model.albumsList = [];
+
+            for ( var artistName in artistsDictionary ) {
+                Model.artistsList.push( {
+                    name: artistName,
+                    tracks: artistsDictionary[ artistName ]
+                } );
+            }
+
+            for ( var albumName in albumsDictionary ) {
+                Model.albumsList.push( {
+                    name: albumName,
+                    tracks: albumsDictionary[ albumName ],
+                    artist: albumsDictionary[ albumName ][ 0 ].artist
+                } );
+            }
         },
 
         passToPreviousTrack: function() {
-            if ( this.model.playedTracks.length > 0 ) {
-                this.model.waitingTracks.unshift( this.model.currentTrack );
-                this.model.currentTrack = this.model.playedTracks.pop();
+            if ( Model.playedTracks.length > 0 ) {
+                Model.waitingTracks.unshift( Model.currentTrack );
+                Model.currentTrack = Model.playedTracks.pop();
             }
         },
 
         passToNextTrack: function() {
-            if ( this.model.waitingTracks.length > 0 ) {
-                this.setCurrentTrack( this.model.waitingTracks.shift() );
+            if ( Model.waitingTracks.length > 0 ) {
+                this.setCurrentTrack( Model.waitingTracks.shift() );
             }
         },
 
         setWaitingTracks: function( tracks ) {
-            this.model.waitingTracks = tracks;
+            Model.waitingTracks = tracks;
         },
 
         addToWaitingTracks: function( track ) {
-            this.model.waitingTracks.push( track );
+            Model.waitingTracks.push( track );
         },
 
         setCurrentTrack: function( track ) {
-            if ( this.model.currentTrack ) this.addToPlayedTracks( this.model.currentTrack );
-            this.model.currentTrack = track;
+            if ( Model.currentTrack ) this.addToPlayedTracks( Model.currentTrack );
+            Model.currentTrack = track;
         },
 
         addToPlayedTracks: function( track ) {
-            this.model.playedTracks.push( track );
+            Model.playedTracks.push( track );
         },
 
-        getTracks: function() {
+        handleItems: function( callback ) {
+            this.findFolders();
+            this.findArtistFolders();
+            this.buildTracksData();
+            callback();
+        },
 
-            var temp = [];
+        // getUserInfo: function( calback ) {
+        //     var request = DriveService.drive.about.get()
+        //     request.execute( function( resp ) {
+        //         Model.user = resp.user;
+        //         Model.user.quotaBytesTotal = resp.quotaBytesTotal;
+        //         Model.user.quotaBytesUsedAggregate = resp.quotaBytesUsedAggregate;
+        //         calback();
+        //     } );
+        // },
 
-            var recursive = function( nextPageToken ) {
+        getTracks: function( callback, nextPageToken ) {
+            var request = DriveService.drive.files.list( {
+                maxResults: 500,
+                fields: 'nextPageToken,items(title,id,parents,labels(starred),shared,fileExtension,mimeType)',
+                q: 'trashed=false',
+                pageToken: nextPageToken
+            } );
 
-                var configs = {
-                    headers: {
-                        'Authorization': DriveService.authResult.token_type + ' ' + DriveService.authResult.access_token
-                    },
-                    params: {
-                        'key': 'AIzaSyAgQ7N0Tv0k80OU3XpA3ltup5RgZxKhWrI',
-                        'maxResults': 1000,
-                        'pageToken': nextPageToken
-                    }
-                };
-
-
-                $http.get( 'https://www.googleapis.com/drive/v2/files', configs ).then( function( resp ) {
-                    temp = temp.concat( resp.data.items );
-                    if ( resp.data.nextPageToken ) {
-                        recursive( resp.data.nextPageToken )
-                    } else {
-                        this.filterItems( temp );
-                        this.findFolders();
-                        this.setRootfolders();
-                        this.findArtistFolders();
-                        this.buildTracksData();
-                    }
-                }.bind( this ) );
-
-            }.bind( this );
-
-            recursive();
-
+            request.execute( function( resp ) {
+                this.items = this.items.concat( resp.items );
+                if ( resp.nextPageToken ) this.getTracks( callback, resp.nextPageToken );
+                else this.handleItems( callback );
+            }.bind( this ) );
         }
 
     }

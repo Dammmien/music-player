@@ -1,4 +1,7 @@
-<div id="logo-container"></div>
+<div id="logo-container">
+    <span class="round"></span>
+    Superlogo
+</div>
 
 <div id="player-container" ng-show="model.currentTrack.title">
     <player></player>
@@ -12,5 +15,7 @@
         <div class="waiting-track-artist">
             {{track.artist}}
         </div>
+        <div class="icon icon-remove" ng-click="onRemoveWaitingTrack($index)"></div>
+        <div class="icon icon-play-outline" ng-click="onPlayWaitingTrack($index)"></div>
     </li>
 </ul>

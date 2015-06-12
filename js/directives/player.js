@@ -1,4 +1,4 @@
-app.directive( 'player', function( Service ) {
+app.directive( 'player', function( Service, Model ) {
 
     return {
 
@@ -14,13 +14,13 @@ app.directive( 'player', function( Service ) {
 
             $scope.player = elements[ 0 ].children[ 0 ];
 
-            $scope.model = Service.model;
+            $scope.model = Model;
 
             $scope.$watch( function() {
                 return $scope.model.currentTrack
             }, function() {
                 if ( $scope.model.currentTrack ) {
-                    $scope.player.src = $scope.model.currentTrack.url;
+                    $scope.player.src = "https://googledrive.com/host/" + $scope.model.currentTrack.id;
                     $scope.player.play();
                 }
             } );

@@ -1,6 +1,6 @@
-app.controller( 'topBarCtrl', function( $scope, Service ) {
+app.controller( 'topBarCtrl', function( $scope, Service, Model ) {
 
-    $scope.model = Service.model;
+    $scope.model = Model;
 
     $scope.onSelectMode = function( mode ) {
         $scope.model.viewMode = mode;
