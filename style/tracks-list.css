@@ -3,7 +3,7 @@
     height: 100%;
     background: #FFFFFF;
     border-top: 1px solid #DDDDDD;
-    margin-top: -1px 0 0 0;
+    box-sizing: border-box;
 }
 
 .tracks-list{

@@ -35,9 +35,8 @@ app.service( 'Service', [ 'DriveService', 'Database', 'Model', '$http', function
                         Model.tracks.push( {
                             title: track.title.replace( '.' + track.fileExtension, '' ),
                             id: track.id,
-                            labels: track.labels,
-                            shared: track.shared,
-                            starred: track.labels.starred,
+                            shared: track.shared ? 1 : 0,
+                            starred: track.labels.starred ? 1 : 0,
                             artist: artistFolder.title,
                             artistId: artistFolder.id,
                             album: albumFolder.title,
@@ -49,7 +48,16 @@ app.service( 'Service', [ 'DriveService', 'Database', 'Model', '$http', function
 
             }, this );
 
-            Database.addAll( Model.tracks, this.setTracksByArtistAndAlbum.bind( this ) );
+            Database.addAll( Model.tracks, function() {
+                this.setTracksByArtistAndAlbum();
+                this.setFavourites();
+            }.bind( this ) );
+        },
+
+        setFavourites: function() {
+            Model.favouritesList = Model.tracks.filter( function( item ) {
+                return item.starred === 1;
+            } );
         },
 
         setTracksByArtistAndAlbum: function() {
@@ -99,6 +107,40 @@ app.service( 'Service', [ 'DriveService', 'Database', 'Model', '$http', function
         setCurrentTrack: function( track ) {
             if ( Model.currentTrack ) this.addToPlayedTracks( Model.currentTrack );
             Model.currentTrack = track;
+        },
+
+        starTrack: function( track, callback ) {
+            var request = DriveService.drive.files.update( {
+                fileId: track.id
+            }, {
+                "labels": {
+                    "starred": true
+                }
+            } );
+
+            request.execute( function( resp ) {
+                track.starred = 1;
+                Model.favouritesList.push( track );
+                Database.update( track );
+                callback();
+            }.bind( this ) );
+        },
+
+        unstarTrack: function( track, callback ) {
+            var request = DriveService.drive.files.update( {
+                fileId: track.id
+            }, {
+                "labels": {
+                    "starred": false
+                }
+            } );
+
+            request.execute( function( resp ) {
+                track.starred = 0;
+                Model.favouritesList.splice( Model.favouritesList.indexOf( track ), 1 );
+                Database.update( track );
+                callback();
+            }.bind( this ) );
         },
 
         addToPlayedTracks: function( track ) {

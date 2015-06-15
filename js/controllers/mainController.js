@@ -13,6 +13,7 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, DriveService, Mo
                     Database.getAll( function( results ) {
                         $scope.model.tracks = results;
                         Service.setTracksByArtistAndAlbum();
+                        Service.setFavourites();
                         $scope.$apply();
                     }.bind( this ) );
                 }
@@ -45,6 +46,18 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, DriveService, Mo
         var first = tracksCopy.shift();
         Service.setCurrentTrack( first );
         Service.setWaitingTracks( tracksCopy );
+    };
+
+    $scope.onStarTrack = function( track ) {
+        Service.starTrack( track, function() {
+            $scope.$apply();
+        } );
+    };
+
+    $scope.onUnstarTrack = function( track ) {
+        Service.unstarTrack( track, function() {
+            $scope.$apply();
+        } );
     };
 
 } ).filter( 'formatTime', function() {

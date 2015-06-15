@@ -29,7 +29,7 @@ app.service( 'Database', [ '$http', function() {
                 keyPath: "id"
             } );
 
-            var properties = [ "title", "starred", "artist", "artistId", "album", "albumId", "url" ];
+            var properties = [ "title", "shared", "starred", "artist", "artistId", "album", "albumId" ];
 
             properties.forEach( function( property ) {
                 tracksStore.createIndex( property, property, {
@@ -72,6 +72,12 @@ app.service( 'Database', [ '$http', function() {
 
             tracksTransaction.oncomplete = success();
         },
+
+        update: function( item ) {
+            var tracksTransaction = this.db.transaction( [ "tracks" ], "readwrite" ),
+                tracksStore = tracksTransaction.objectStore( "tracks" );
+            tracksStore.put( JSON.parse( angular.toJson( item ) ) ); // remove $$hashkey before update item
+        }
 
     };
 

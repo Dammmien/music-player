@@ -1,5 +1,17 @@
-<span ng-click="onSelectMode('tracks')" ng-class="model.viewMode === 'tracks' ? 'active view-mode' : 'view-mode'">Tracks</span>
-<span ng-click="onSelectMode('albums')" ng-class="model.viewMode === 'albums' ? 'active view-mode' : 'view-mode'">Albums</span>
-<span ng-click="onSelectMode('artists')" ng-class="model.viewMode === 'artists' ? 'active view-mode' : 'view-mode'">Artist</span>
+<span ng-click="onSelectMode('tracks')" ng-class="model.viewMode === 'tracks' ? 'active view-mode' : 'view-mode'">
+    Tracks [{{model.tracks.length}}]
+</span>
+
+<span ng-click="onSelectMode('albums')" ng-class="model.viewMode === 'albums' ? 'active view-mode' : 'view-mode'">
+    Albums [{{model.albumsList.length}}]
+</span>
+
+<span ng-click="onSelectMode('artists')" ng-class="model.viewMode === 'artists' ? 'active view-mode' : 'view-mode'">
+    Artists [{{model.artistsList.length}}]
+</span>
+
+<span ng-click="onSelectMode('favourites')" ng-class="model.viewMode === 'favourites' ? 'active view-mode' : 'view-mode'">
+    Favourites [{{model.favouritesList.length}}]
+</span>
 
 <input ng-model="model.filter" type="text" id="search-input" placeholder="Search"/>
