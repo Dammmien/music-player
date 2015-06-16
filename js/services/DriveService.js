@@ -8,6 +8,8 @@ app.service( 'DriveService', function() {
             'https://www.googleapis.com/auth/drive',
             'https://www.googleapis.com/auth/drive.file',
             'https://www.googleapis.com/auth/drive.metadata',
+            'https://www.googleapis.com/auth/drive.appfolder',
+            'https://www.googleapis.com/auth/drive.appdata',
             'email',
             'profile'
         ],
@@ -28,6 +30,7 @@ app.service( 'DriveService', function() {
                 this.authResult = authResult;
                 gapi.client.load( 'drive', 'v2', function() {
                     this.drive = gapi.client.drive;
+                    this.client = gapi.client;
                     this.callback();
                 }.bind( this ) );
             } else {

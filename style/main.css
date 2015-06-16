@@ -16,7 +16,7 @@ html,body{
     cursor: pointer;
 }
 
-#container{
+#main-container{
     position: absolute;
     left: 300px;
     top: 70px;

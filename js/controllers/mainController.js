@@ -1,9 +1,12 @@
-app.controller( 'mainCtrl', function( $scope, $window, Service, DriveService, Model, Database ) {
+app.controller( 'mainCtrl', function( $scope, $window, Service, PlaylistsService, FavouritesService, DriveService, Model, Database, ngDialog ) {
 
     $scope.model = Model;
 
     $window.initGapi = function() {
         DriveService.checkAuth( function() {
+            PlaylistsService.checkPlaylists( function() {
+                $scope.$apply();
+            }.bind( this ) );
             Database.init( function( dbExist ) {
                 if ( !dbExist ) {
                     Service.getTracks( function() {
@@ -13,7 +16,7 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, DriveService, Mo
                     Database.getAll( function( results ) {
                         $scope.model.tracks = results;
                         Service.setTracksByArtistAndAlbum();
-                        Service.setFavourites();
+                        FavouritesService.setFavourites();
                         $scope.$apply();
                     }.bind( this ) );
                 }
@@ -25,6 +28,20 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, DriveService, Mo
         $scope.model.detailsList = tracks;
         $scope.model.filter = '';
         $scope.model.viewMode = 'details';
+    };
+
+    $scope.onOpenPlaylistsList = function( track ) {
+        $scope.openedDialog = ngDialog.open( {
+            template: '/templates/playlistsListDialog.html',
+            data: track,
+            scope: $scope
+        } );
+    };
+
+    $scope.addTrackToPlaylist = function( track, playlist ) {
+        playlist.tracks.push( track );
+        $scope.openedDialog.close();
+        PlaylistsService.savePlaylistFile();
     };
 
     $scope.onAddTrackToWaitingTracks = function( track ) {
@@ -48,14 +65,14 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, DriveService, Mo
         Service.setWaitingTracks( tracksCopy );
     };
 
-    $scope.onStarTrack = function( track ) {
-        Service.starTrack( track, function() {
+    $scope.onAddTrackToFavourites = function( track ) {
+        FavouritesService.addTrackToFavourites( track, function() {
             $scope.$apply();
         } );
     };
 
-    $scope.onUnstarTrack = function( track ) {
-        Service.unstarTrack( track, function() {
+    $scope.onRemoveTrackFromFavourites = function( track ) {
+        FavouritesService.removeTrackFromFavourites( track, function() {
             $scope.$apply();
         } );
     };

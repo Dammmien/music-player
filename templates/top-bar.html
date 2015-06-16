@@ -14,4 +14,8 @@
     Favourites [{{model.favouritesList.length}}]
 </span>
 
+<span ng-click="onSelectMode('playlists')" ng-class="model.viewMode === 'playlists' ? 'active view-mode' : 'view-mode'">
+    Playlists [{{model.playlistsList.length}}]
+</span>
+
 <input ng-model="model.filter" type="text" id="search-input" placeholder="Search"/>

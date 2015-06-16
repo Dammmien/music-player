@@ -1,0 +1,39 @@
+<table class="tracks-list" ng-if="model.viewMode === 'details'">
+    <thead>
+        <tr>
+            <th>
+                Title
+                <div>
+                    <span ng-click="orderByField = 'title'; reverseSort = !reverseSort">Title</span>
+                    <span ng-show="orderByField == 'title'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
+                </div>
+            </th>
+            <th>
+                Album
+                <div>
+                    <span ng-click="orderByField = 'album'; reverseSort = !reverseSort">Album</span>
+                    <span ng-show="orderByField == 'album'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
+                </div>
+            </th>
+            <th>
+                Artist
+                <div>
+                    <span ng-click="orderByField = 'artist'; reverseSort = !reverseSort">Artist</span>
+                    <span ng-show="orderByField == 'artist'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
+                </div>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="track in model.detailsList | filter:model.filter | orderBy:orderByField:reverseSort">
+            <td>{{track.title}}</td>
+            <td>{{track.album}}</td>
+            <td>{{track.artist}}</td>
+            <td>
+                <span class="icon icon-play-outline" ng-click="onPlayTrack( track )"></span>
+                <span class="icon icon-queue-add" ng-click="onAddTrackToWaitingTracks( track )" ng-if="model.currentTrack"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>

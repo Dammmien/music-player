@@ -1,4 +1,4 @@
-app.service( 'Service', [ 'DriveService', 'Database', 'Model', '$http', function( DriveService, Database, Model, $http ) {
+app.service( 'Service', function( DriveService, FavouritesService, Database, Model, $http ) {
 
     var service = {
 
@@ -50,35 +50,29 @@ app.service( 'Service', [ 'DriveService', 'Database', 'Model', '$http', function
 
             Database.addAll( Model.tracks, function() {
                 this.setTracksByArtistAndAlbum();
-                this.setFavourites();
+                FavouritesService.setFavourites();
             }.bind( this ) );
         },
 
-        setFavourites: function() {
-            Model.favouritesList = Model.tracks.filter( function( item ) {
-                return item.starred === 1;
-            } );
-        },
-
         setTracksByArtistAndAlbum: function() {
-            var artistsDictionary = _.groupBy( Model.tracks, 'artist' );
-            var albumsDictionary = _.groupBy( Model.tracks, 'album' );
+            var artistsDictionary = _.groupBy( Model.tracks, 'artistId' );
+            var albumsDictionary = _.groupBy( Model.tracks, 'albumId' );
 
             Model.artistsList = [];
             Model.albumsList = [];
 
-            for ( var artistName in artistsDictionary ) {
+            for ( var artistId in artistsDictionary ) {
                 Model.artistsList.push( {
-                    name: artistName,
-                    tracks: artistsDictionary[ artistName ]
+                    name: artistsDictionary[ artistId ][ 0 ].artist,
+                    tracks: artistsDictionary[ artistId ]
                 } );
             }
 
-            for ( var albumName in albumsDictionary ) {
+            for ( var albumId in albumsDictionary ) {
                 Model.albumsList.push( {
-                    name: albumName,
-                    tracks: albumsDictionary[ albumName ],
-                    artist: albumsDictionary[ albumName ][ 0 ].artist
+                    name: albumsDictionary[ albumId ][ 0 ].album,
+                    tracks: albumsDictionary[ albumId ],
+                    artist: albumsDictionary[ albumId ][ 0 ].artist
                 } );
             }
         },
@@ -107,40 +101,6 @@ app.service( 'Service', [ 'DriveService', 'Database', 'Model', '$http', function
         setCurrentTrack: function( track ) {
             if ( Model.currentTrack ) this.addToPlayedTracks( Model.currentTrack );
             Model.currentTrack = track;
-        },
-
-        starTrack: function( track, callback ) {
-            var request = DriveService.drive.files.update( {
-                fileId: track.id
-            }, {
-                "labels": {
-                    "starred": true
-                }
-            } );
-
-            request.execute( function( resp ) {
-                track.starred = 1;
-                Model.favouritesList.push( track );
-                Database.update( track );
-                callback();
-            }.bind( this ) );
-        },
-
-        unstarTrack: function( track, callback ) {
-            var request = DriveService.drive.files.update( {
-                fileId: track.id
-            }, {
-                "labels": {
-                    "starred": false
-                }
-            } );
-
-            request.execute( function( resp ) {
-                track.starred = 0;
-                Model.favouritesList.splice( Model.favouritesList.indexOf( track ), 1 );
-                Database.update( track );
-                callback();
-            }.bind( this ) );
         },
 
         addToPlayedTracks: function( track ) {
@@ -183,4 +143,4 @@ app.service( 'Service', [ 'DriveService', 'Database', 'Model', '$http', function
 
     return service;
 
-} ] );
+} );
