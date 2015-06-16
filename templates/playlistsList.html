@@ -23,6 +23,7 @@
             <td>{{playlist.name}}</td>
             <td>{{playlist.tracks.length}} tracks</td>
             <td>
+                <span class="icon icon-edit" ng-click="onEditPlaylist( playlist )"></span>
                 <span class="icon icon-play-outline" ng-click="onPlayTracks( playlist.tracks )"></span>
                 <span class="icon icon-queue-add" ng-click="onAddTracksToWaitingTracks( playlist.tracks )" ng-if="model.currentTrack"></span>
             </td>

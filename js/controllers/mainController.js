@@ -24,12 +24,6 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, PlaylistsService
         } );
     };
 
-    $scope.onViewDetails = function( tracks ) {
-        $scope.model.detailsList = tracks;
-        $scope.model.filter = '';
-        $scope.model.viewMode = 'details';
-    };
-
     $scope.onOpenPlaylistsList = function( track ) {
         $scope.openedDialog = ngDialog.open( {
             template: '/templates/playlistsListDialog.html',
