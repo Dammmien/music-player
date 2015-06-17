@@ -1,4 +1,4 @@
-app.service( 'Service', function( DriveService, FavouritesService, Database, Model, $http ) {
+app.service( 'Service', function( DriveService, FavouritesService, NotificationsService, Database, Model, $http, $document ) {
 
     var service = {
 
@@ -32,7 +32,7 @@ app.service( 'Service', function( DriveService, FavouritesService, Database, Mod
                     } );
 
                     albumTracks.forEach( function( track ) {
-                        Model.tracks.push( {
+                        Model.tracksList.push( {
                             title: track.title.replace( '.' + track.fileExtension, '' ),
                             id: track.id,
                             shared: track.shared ? 1 : 0,
@@ -48,15 +48,15 @@ app.service( 'Service', function( DriveService, FavouritesService, Database, Mod
 
             }, this );
 
-            Database.addAll( Model.tracks, function() {
+            Database.addAll( Model.tracksList, function() {
                 this.setTracksByArtistAndAlbum();
                 FavouritesService.setFavourites();
             }.bind( this ) );
         },
 
         setTracksByArtistAndAlbum: function() {
-            var artistsDictionary = _.groupBy( Model.tracks, 'artistId' );
-            var albumsDictionary = _.groupBy( Model.tracks, 'albumId' );
+            var artistsDictionary = _.groupBy( Model.tracksList, 'artistId' );
+            var albumsDictionary = _.groupBy( Model.tracksList, 'albumId' );
 
             Model.artistsList = [];
             Model.albumsList = [];
@@ -75,36 +75,6 @@ app.service( 'Service', function( DriveService, FavouritesService, Database, Mod
                     artist: albumsDictionary[ albumId ][ 0 ].artist
                 } );
             }
-        },
-
-        passToPreviousTrack: function() {
-            if ( Model.playedTracks.length > 0 ) {
-                Model.waitingTracks.unshift( Model.currentTrack );
-                Model.currentTrack = Model.playedTracks.pop();
-            }
-        },
-
-        passToNextTrack: function() {
-            if ( Model.waitingTracks.length > 0 ) {
-                this.setCurrentTrack( Model.waitingTracks.shift() );
-            }
-        },
-
-        setWaitingTracks: function( tracks ) {
-            Model.waitingTracks = tracks;
-        },
-
-        addToWaitingTracks: function( track ) {
-            Model.waitingTracks.push( track );
-        },
-
-        setCurrentTrack: function( track ) {
-            if ( Model.currentTrack ) this.addToPlayedTracks( Model.currentTrack );
-            Model.currentTrack = track;
-        },
-
-        addToPlayedTracks: function( track ) {
-            Model.playedTracks.push( track );
         },
 
         handleItems: function( callback ) {

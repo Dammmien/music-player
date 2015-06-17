@@ -15,6 +15,7 @@
     <link href="style/topbar.css" rel="stylesheet"/>
     <link href="style/player.css" rel="stylesheet"/>
     <link href="style/tracks-list.css" rel="stylesheet"/>
+    <link href="style/items-list.css" rel="stylesheet"/>
 </head>
 <body>
 
@@ -22,19 +23,19 @@
     <div id="top-bar" ng-include="'/templates/top-bar.html'" ng-controller="topBarCtrl"></div>
 
     <div id="main-container" ng-controller="mainCtrl" ng-switch on="model.viewMode">
-        <div class="sub-container" ng-switch-when="tracks">
+        <div class="items-list" ng-switch-when="tracks">
             <div ng-include="'templates/tracksList.html'" ng-controller="tracksListCtrl"></div>
         </div>
-        <div class="sub-container" ng-switch-when="albums">
+        <div class="items-list" ng-switch-when="albums">
             <div ng-include="'templates/albumsList.html'" ng-controller="albumsListCtrl"></div>
         </div>
-        <div class="sub-container" ng-switch-when="artists">
+        <div class="items-list" ng-switch-when="artists">
             <div ng-include="'templates/artistsList.html'" ng-controller="artistsListCtrl"></div>
         </div>
-        <div class="sub-container" ng-switch-when="favourites">
+        <div class="items-list" ng-switch-when="favourites">
             <div ng-include="'templates/favouritesList.html'" ng-controller="favouritesListCtrl"></div>
         </div>
-        <div class="sub-container" ng-switch-when="playlists">
+        <div class="items-list" ng-switch-when="playlists">
             <div ng-include="'templates/playlistsList.html'" ng-controller="playlistsListCtrl"></div>
         </div>
     </div>
@@ -69,6 +70,8 @@
     <script type="text/javascript" src="js/services/DriveService.js"></script>
     <script type="text/javascript" src="js/services/PlaylistsService.js"></script>
     <script type="text/javascript" src="js/services/FavouritesService.js"></script>
+    <script type="text/javascript" src="js/services/NotificationsService.js"></script>
+    <script type="text/javascript" src="js/services/PlayerService.js"></script>
 
     <!-- GAPI -->
     <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=readyGapi"></script>

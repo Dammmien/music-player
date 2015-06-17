@@ -1,4 +1,4 @@
-app.service( 'Model', [ function() {
+app.service( 'Model', function() {
 
     var model = {
         tracks: [],
@@ -10,4 +10,4 @@ app.service( 'Model', [ function() {
 
     return model;
 
-} ] );
+} );

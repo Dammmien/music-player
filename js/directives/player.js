@@ -1,4 +1,4 @@
-app.directive( 'player', function( Service, Model ) {
+app.directive( 'player', function( PlayerService, Model ) {
 
     return {
 
@@ -14,21 +14,13 @@ app.directive( 'player', function( Service, Model ) {
 
             $scope.player = elements[ 0 ].children[ 0 ];
 
+            PlayerService.player = $scope.player;
+
             $scope.model = Model;
 
-            $scope.$watch( function() {
-                return $scope.model.currentTrack
-            }, function() {
-                if ( $scope.model.currentTrack ) {
-                    $scope.player.src = "https://googledrive.com/host/" + $scope.model.currentTrack.id;
-                    $scope.player.play();
-                }
-            } );
-
             $scope.player.addEventListener( 'ended', function() {
-                $scope.$apply( function() {
-                    Service.passToNextTrack();
-                } );
+                PlayerService.passToNextTrack();
+                $scope.$digest();
             } );
 
             $scope.player.addEventListener( 'timeupdate', function() {
@@ -44,11 +36,11 @@ app.directive( 'player', function( Service, Model ) {
             };
 
             $scope.onPrevious = function() {
-                Service.passToPreviousTrack();
+                PlayerService.passToPreviousTrack();
             };
 
             $scope.onNext = function() {
-                Service.passToNextTrack();
+                PlayerService.passToNextTrack();
             };
 
         }

@@ -52,3 +52,13 @@
 .tracks-list tr td .icon:hover{
     color: #222222;
 }
+
+.tracks-list .playlist-tracks-container{
+    padding: 20px;
+}
+
+.tracks-list .playlist-tracks-container .playlist-track{
+    margin: 10px 0 0 0;
+    padding: 10px;
+    border: 1px solid #DDDDDD;
+}

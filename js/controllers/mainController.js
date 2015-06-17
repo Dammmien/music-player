@@ -1,9 +1,10 @@
-app.controller( 'mainCtrl', function( $scope, $window, Service, PlaylistsService, FavouritesService, DriveService, Model, Database, ngDialog ) {
+app.controller( 'mainCtrl', function( $scope, $window, Service, PlaylistsService, PlayerService, FavouritesService, NotificationsService, DriveService, Model, Database, ngDialog ) {
 
     $scope.model = Model;
 
     $window.initGapi = function() {
         DriveService.checkAuth( function() {
+            NotificationsService.checkPermission();
             PlaylistsService.checkPlaylists( function() {
                 $scope.$apply();
             }.bind( this ) );
@@ -14,7 +15,7 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, PlaylistsService
                     } );
                 } else {
                     Database.getAll( function( results ) {
-                        $scope.model.tracks = results;
+                        $scope.model.tracksList = results;
                         Service.setTracksByArtistAndAlbum();
                         FavouritesService.setFavourites();
                         $scope.$apply();
@@ -39,24 +40,24 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, PlaylistsService
     };
 
     $scope.onAddTrackToWaitingTracks = function( track ) {
-        Service.addToWaitingTracks( track );
+        PlayerService.addToWaitingTracks( track );
     };
 
     $scope.onAddTracksToWaitingTracks = function( tracks ) {
         tracks.forEach( function( track ) {
-            Service.addToWaitingTracks( track );
+            PlayerService.addToWaitingTracks( track );
         } );
     };
 
     $scope.onPlayTrack = function( track ) {
-        Service.setCurrentTrack( track );
+        PlayerService.setCurrentTrack( track );
     };
 
     $scope.onPlayTracks = function( tracks ) {
         var tracksCopy = angular.copy( tracks );
         var first = tracksCopy.shift();
-        Service.setCurrentTrack( first );
-        Service.setWaitingTracks( tracksCopy );
+        PlayerService.setCurrentTrack( first );
+        PlayerService.setWaitingTracks( tracksCopy );
     };
 
     $scope.onAddTrackToFavourites = function( track ) {

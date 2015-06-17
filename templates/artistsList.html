@@ -1,31 +1,26 @@
-<table class="tracks-list" ng-if="model.viewMode === 'artists'">
-    <thead>
-        <tr>
-            <th>
-                Artist
-                <div>
-                    <span ng-click="orderByField = 'name'; reverseSort = !reverseSort">Artist</span>
-                    <span ng-show="orderByField == 'name'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
-                </div>
-            </th>
-            <th>
-                Tracks
-                <div>
-                    <span ng-click="orderByField = 'tracks'; reverseSort = !reverseSort">Tracks</span>
-                    <span ng-show="orderByField == 'tracks'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
-                </div>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="artist in model.artistsList | filter:model.filter | orderBy:orderByField:reverseSort">
-            <td>{{artist.name}}</td>
-            <td>{{artist.tracks.length}} tracks</td>
-            <td>
-                <span class="icon icon-play-outline" ng-click="onPlayTracks( artist.tracks )"></span>
-                <span class="icon icon-queue-add" ng-click="onAddTracksToWaitingTracks( artist.tracks )" ng-if="model.currentTrack"></span>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="header">
+    <div class="row">
+        <div class="col col40" ng-click="orderByField = 'name'; reverseSort = !reverseSort">
+            Artist <span ng-show="orderByField == 'name'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
+        </div>
+        <div class="col col60" ng-click="orderByField = 'tracks'; reverseSort = !reverseSort">
+            Tracks <span ng-show="orderByField == 'tracks'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
+        </div>
+    </div>
+</div>
+
+<div class="body">
+    <div class="row" ng-repeat="artist in filteredList = ( model.artistsList | filter:model.filter | orderBy:orderByField:reverseSort ) | limitTo:listLimit">
+        <div class="col col40">{{artist.name}}</div>
+        <div class="col col30">{{artist.tracks.length}} tracks</div>
+        <div class="col col30">
+            <span class="icon icon-play-outline" ng-click="onPlayTracks( artist.tracks )"></span>
+            <span class="icon icon-queue-add" ng-click="onAddTracksToWaitingTracks( artist.tracks )" ng-if="model.currentTrack"></span>
+        </div>
+    </div>
+    <div class="row" ng-if="listLimit < filteredList.length">
+        <div class="col center" ng-click="onShowMore(listLimit)">
+            Show more artists
+        </div>
+    </div>
+</div>

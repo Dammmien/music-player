@@ -1,42 +1,33 @@
-<table class="tracks-list" ng-if="model.viewMode === 'tracks'">
-    <thead>
-        <tr>
-            <th>
-                Title
-                <div>
-                    <span ng-click="orderByField = 'title'; reverseSort = !reverseSort">Title</span>
-                    <span ng-show="orderByField == 'title'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
-                </div>
-            </th>
-            <th>
-                Album
-                <div>
-                    <span ng-click="orderByField = 'album'; reverseSort = !reverseSort">Album</span>
-                    <span ng-show="orderByField == 'album'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
-                </div>
-            </th>
-            <th>
-                Artist
-                <div>
-                    <span ng-click="orderByField = 'artist'; reverseSort = !reverseSort">Artist</span>
-                    <span ng-show="orderByField == 'artist'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
-                </div>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="track in model.tracks | filter:model.filter | orderBy:orderByField:reverseSort">
-            <td>{{track.title}}</td>
-            <td>{{track.album}}</td>
-            <td>{{track.artist}}</td>
-            <td>
-                <span class="icon icon-play-outline" ng-click="onPlayTrack( track )"></span>
-                <span class="icon icon-star" ng-click="onRemoveTrackFromFavourites( track )" ng-if="track.starred === 1"></span>
-                <span class="icon icon-star-outline" ng-click="onAddTrackToFavourites( track )" ng-if="track.starred === 0"></span>
-                <span class="icon icon-queue-add" ng-click="onAddTrackToWaitingTracks( track )" ng-if="model.currentTrack"></span>
-                <span class="icon icon-playlist-add" ng-click="onOpenPlaylistsList( track )"></span>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="header">
+    <div class="row">
+        <div class="col col30" ng-click="orderByField = 'title'; reverseSort = !reverseSort">
+            Title <span ng-show="orderByField == 'title'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
+        </div>
+        <div class="col col30" ng-click="orderByField = 'album'; reverseSort = !reverseSort">
+            Album <span ng-show="orderByField == 'album'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
+        </div>
+        <div class="col col40" ng-click="orderByField = 'artist'; reverseSort = !reverseSort">
+            Artist <span ng-show="orderByField == 'artist'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
+        </div>
+    </div>
+</div>
+
+<div class="body">
+    <div class="row" ng-repeat="track in filteredList = ( model.tracksList | filter:model.filter | orderBy:orderByField:reverseSort ) | limitTo:listLimit">
+        <div class="col col30">{{track.title}}</div>
+        <div class="col col30">{{track.album}}</div>
+        <div class="col col20">{{track.artist}}</div>
+        <div class="col col20">
+            <span class="icon icon-play-outline" ng-click="onPlayTrack( track )"></span>
+            <span class="icon icon-star" ng-click="onRemoveTrackFromFavourites( track )" ng-if="track.starred === 1"></span>
+            <span class="icon icon-star-outline" ng-click="onAddTrackToFavourites( track )" ng-if="track.starred === 0"></span>
+            <span class="icon icon-queue-add" ng-click="onAddTrackToWaitingTracks( track )" ng-if="model.currentTrack"></span>
+            <span class="icon icon-playlist-add" ng-click="onOpenPlaylistsList( track )"></span>
+        </div>
+    </div>
+    <div class="row" ng-if="listLimit < filteredList.length">
+        <div class="col center" ng-click="onShowMore(listLimit)">
+            Show more tracks
+        </div>
+    </div>
+</div>

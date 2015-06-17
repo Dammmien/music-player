@@ -3,7 +3,7 @@ app.service( 'FavouritesService', function( DriveService, Model, Database, $http
     var service = {
 
         setFavourites: function() {
-            Model.favouritesList = Model.tracks.filter( function( item ) {
+            Model.favouritesList = Model.tracksList.filter( function( item ) {
                 return item.starred === 1;
             } );
         },
