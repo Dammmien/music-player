@@ -17,7 +17,7 @@
         <div class="col col30">{{album.name}}</div>
         <div class="col col30">{{album.tracks.length}} tracks</div>
         <div class="col col20">{{album.tracks[0].artist}}</div>
-        <div class="col col20">
+        <div class="col col20 right">
             <span class="icon icon-play-outline" ng-click="onPlayTracks( album.tracks )"></span>
             <span class="icon icon-queue-add" ng-click="onAddTracksToWaitingTracks( album.tracks )" ng-if="model.currentTrack"></span>
         </div>

@@ -13,7 +13,7 @@
     <div class="row" ng-repeat="artist in filteredList = ( model.artistsList | filter:model.filter | orderBy:orderByField:reverseSort ) | limitTo:listLimit">
         <div class="col col40">{{artist.name}}</div>
         <div class="col col30">{{artist.tracks.length}} tracks</div>
-        <div class="col col30">
+        <div class="col col30 right">
             <span class="icon icon-play-outline" ng-click="onPlayTracks( artist.tracks )"></span>
             <span class="icon icon-queue-add" ng-click="onAddTracksToWaitingTracks( artist.tracks )" ng-if="model.currentTrack"></span>
         </div>

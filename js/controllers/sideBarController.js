@@ -11,4 +11,17 @@ app.controller( 'sideBarCtrl', function( $scope, PlayerService, Model ) {
         PlayerService.setCurrentTrack( track );
     };
 
+    $scope.onRemoveWaitingTracks = function() {
+        PlayerService.removeWaitingTracks();
+    };
+
+    $scope.onPlayRandomTracks = function() {
+        var tracks = _.shuffle( Model.tracksList ).splice( 0, 100 );
+        PlayerService.playTracks( tracks );
+    };
+
+    $scope.onShuffleWaitingTracks = function() {
+        PlayerService.shuffleWaitingTracks();
+    };
+
 } );

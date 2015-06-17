@@ -26,6 +26,21 @@ app.service( 'PlayerService', function( NotificationsService, Model, $document )
             Model.waitingTracks.push( track );
         },
 
+        removeWaitingTracks: function() {
+            Model.waitingTracks = [];
+        },
+
+        shuffleWaitingTracks: function() {
+            Model.waitingTracks = _.shuffle( Model.waitingTracks );
+        },
+
+        playTracks: function( tracks ) {
+            var tracksCopy = angular.copy( tracks );
+            var first = tracksCopy.shift();
+            this.setCurrentTrack( first );
+            this.setWaitingTracks( tracksCopy );
+        },
+
         setCurrentTrack: function( track ) {
             if ( Model.currentTrack ) this.addToPlayedTracks( Model.currentTrack );
             Model.currentTrack = track;

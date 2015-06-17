@@ -54,10 +54,7 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, PlaylistsService
     };
 
     $scope.onPlayTracks = function( tracks ) {
-        var tracksCopy = angular.copy( tracks );
-        var first = tracksCopy.shift();
-        PlayerService.setCurrentTrack( first );
-        PlayerService.setWaitingTracks( tracksCopy );
+        PlayerService.playTracks( tracks );
     };
 
     $scope.onAddTrackToFavourites = function( track ) {

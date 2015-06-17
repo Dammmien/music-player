@@ -27,6 +27,10 @@ app.directive( 'player', function( PlayerService, Model ) {
                 $scope.$digest();
             } );
 
+            $scope.onSetCurrentTime = function( e ) {
+                $scope.player.currentTime = e.offsetX * $scope.player.duration / 260;
+            };
+
             $scope.onPause = function() {
                 $scope.player.pause();
             };

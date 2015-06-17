@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'icon-font';
-	src:url('fonts/icon-font.eot?');
-	src:url('fonts/icon-font.eot?#iefix') format('embedded-opentype'),
-		url('fonts/icon-font.ttf') format('truetype'),
-		url('fonts/icon-font.woff') format('woff'),
-		url('fonts/icon-font.svg?#icon-font') format('svg');
+	src:url('fonts/icon-font.eot?r29icb');
+	src:url('fonts/icon-font.eot?#iefixr29icb') format('embedded-opentype'),
+		url('fonts/icon-font.ttf?r29icb') format('truetype'),
+		url('fonts/icon-font.woff?r29icb') format('woff'),
+		url('fonts/icon-font.svg?r29icb#icon-font') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -131,8 +131,14 @@
 .icon-arrow-up:before {
 	content: "\e112";
 }
+.icon-track:before {
+	content: "\e136";
+}
 .icon-list:before {
 	content: "\e15c";
+}
+.icon-filter_drama:before {
+	content: "\e172";
 }
 .icon-items:before {
 	content: "\e1ff";
@@ -151,6 +157,12 @@
 }
 .icon-delete:before {
 	content: "\e287";
+}
+.icon-favourite-filled:before {
+	content: "\e291";
+}
+.icon-favourite-outline:before {
+	content: "\e292";
 }
 .icon-remove:before {
 	content: "\e29c";

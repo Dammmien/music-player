@@ -8,7 +8,7 @@
     by {{model.currentTrack.artist}}
 </div>
 
-<div id="progress-bar-container" ng-if="model.currentTrack">
+<div id="progress-bar-container" ng-if="model.currentTrack" ng-click="onSetCurrentTime($event)">
     <div id="progress-bar" style="width:{{player.currentTime / player.duration * 100}}%"></div>
 </div>
 
