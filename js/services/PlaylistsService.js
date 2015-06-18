@@ -5,7 +5,7 @@ app.service( 'PlaylistsService', function( DriveService, Model, $http ) {
         boundary: '-------314159265358979323846',
 
         checkPlaylists: function( callback ) {
-            DriveService.client.drive.children.list( {
+            DriveService.drive.children.list( {
                 'folderId': 'appfolder',
             } ).execute( function( appFolder ) {
                 if ( appFolder.items.length === 0 ) {
@@ -18,7 +18,7 @@ app.service( 'PlaylistsService', function( DriveService, Model, $http ) {
         },
 
         getPlaylists: function( callback ) {
-            gapi.client.drive.files.get( {
+            DriveService.drive.files.get( {
                 'fileId': this.playlistsFile.id,
                 alt: 'media'
             } ).execute( function( resp ) {

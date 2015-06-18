@@ -25,6 +25,28 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, PlaylistsService
         } );
     };
 
+    $scope.onOpenShareDialog = function( item ) {
+        $scope.model.sharingItem = item;
+        $scope.openedDialog = ngDialog.open( {
+            template: '/templates/shareDialog.html',
+            scope: $scope
+        } );
+    };
+
+    $scope.onShare = function() {
+        DriveService.drive.permissions.insert( {
+            'fileId': $scope.model.sharingItem.id,
+            'resource': {
+                value: $scope.model.sharingMail,
+                type: 'user',
+                role: 'reader'
+            }
+        } ).execute( function( resp ) {
+            console.log( resp );
+            $scope.openedDialog.close();
+        } );
+    };
+
     $scope.onOpenPlaylistsList = function( track ) {
         $scope.openedDialog = ngDialog.open( {
             template: '/templates/playlistsListDialog.html',

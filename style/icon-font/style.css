@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'icon-font';
-	src:url('fonts/icon-font.eot?r29icb');
-	src:url('fonts/icon-font.eot?#iefixr29icb') format('embedded-opentype'),
-		url('fonts/icon-font.ttf?r29icb') format('truetype'),
-		url('fonts/icon-font.woff?r29icb') format('woff'),
-		url('fonts/icon-font.svg?r29icb#icon-font') format('svg');
+	src:url('fonts/icon-font.eot?-wdfi7x');
+	src:url('fonts/icon-font.eot?#iefix-wdfi7x') format('embedded-opentype'),
+		url('fonts/icon-font.ttf?-wdfi7x') format('truetype'),
+		url('fonts/icon-font.woff?-wdfi7x') format('woff'),
+		url('fonts/icon-font.svg?-wdfi7x#icon-font') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -116,6 +116,9 @@
 .icon-edit:before {
 	content: "\e0ee";
 }
+.icon-cloud-outline:before {
+	content: "\e0fd";
+}
 .icon-headset:before {
 	content: "\e10c";
 }
@@ -137,8 +140,8 @@
 .icon-list:before {
 	content: "\e15c";
 }
-.icon-filter_drama:before {
-	content: "\e172";
+.icon-cloud-filled:before {
+	content: "\e1be";
 }
 .icon-items:before {
 	content: "\e1ff";
@@ -146,10 +149,13 @@
 .icon-check:before {
 	content: "\e206";
 }
+.icon-share:before {
+	content: "\e25a";
+}
 .icon-star:before {
 	content: "\e260";
 }
-.icon-star_half:before {
+.icon-star-half:before {
 	content: "\e261";
 }
 .icon-star-outline:before {

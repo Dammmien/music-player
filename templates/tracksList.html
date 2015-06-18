@@ -22,6 +22,7 @@
             <span class="icon icon-favourite-filled" ng-click="onRemoveTrackFromFavourites( track )" ng-if="track.starred === 1"></span>
             <span class="icon icon-favourite-outline" ng-click="onAddTrackToFavourites( track )" ng-if="track.starred === 0"></span>
             <span class="icon icon-queue-add" ng-click="onAddTrackToWaitingTracks( track )" ng-if="model.currentTrack"></span>
+            <span class="icon icon-share" ng-click="onOpenShareDialog( track )"></span>
             <span class="icon icon-playlist-add" ng-click="onOpenPlaylistsList( track )"></span>
         </div>
     </div>
