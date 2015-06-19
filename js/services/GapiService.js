@@ -1,4 +1,4 @@
-app.service( 'DriveService', function() {
+app.service( 'GapiService', function() {
 
     var service = {
 

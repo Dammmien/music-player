@@ -1,4 +1,4 @@
-app.controller( 'playlistsListCtrl', function( $scope, Service, Model ) {
+app.controller( 'playlistsListCtrl', function( $scope, Model ) {
 
     $scope.model = Model;
 

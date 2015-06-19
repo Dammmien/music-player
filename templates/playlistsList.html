@@ -1,7 +1,7 @@
 <div class="header">
     <div class="row">
-        <div class="col col40" ng-click="orderByField = 'name'; reverseSort = !reverseSort">
-            Name <span ng-show="orderByField == 'name'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
+        <div class="col col40" ng-click="orderByField = 'title'; reverseSort = !reverseSort">
+            Title <span ng-show="orderByField == 'title'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
         </div>
         <div class="col col60" ng-click="orderByField = 'tracks'; reverseSort = !reverseSort">
             Tracks <span ng-show="orderByField == 'tracks'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
@@ -11,7 +11,7 @@
 
 <div class="body">
     <div class="row" ng-repeat="playlist in filteredList = ( model.playlistsList | filter:model.filter | orderBy:orderByField:reverseSort ) | limitTo:listLimit">
-        <div class="col col40">{{playlist.name}}</div>
+        <div class="col col40">{{playlist.title}}</div>
         <div class="col col30">{{playlist.tracks.length}} tracks</div>
         <div class="col col30 right">
             <span class="icon icon-edit" ng-click="openDetails = !openDetails"></span>

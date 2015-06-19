@@ -2,6 +2,6 @@ Select a list to which to add this track :
 
 <div class="playlists-container">
     <div class="playlist" ng-repeat="playlist in model.playlistsList" ng-click="addTrackToPlaylist( ngDialogData, playlist )">
-        {{playlist.name}} - {{playlist.tracks.length}} tracks
+        {{playlist.title}} - {{playlist.tracks.length}} tracks
     </div>
 </div>

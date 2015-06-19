@@ -1,4 +1,4 @@
-app.service( 'FavouritesService', function( DriveService, Model, Database, $http ) {
+app.service( 'FavouritesService', function( GapiService, Model, Database, $http ) {
 
     var service = {
 
@@ -9,7 +9,7 @@ app.service( 'FavouritesService', function( DriveService, Model, Database, $http
         },
 
         addTrackToFavourites: function( track, callback ) {
-            DriveService.drive.files.patch( {
+            GapiService.drive.files.patch( {
                 'fileId': track.id,
                 'resource': {
                     "labels": {
@@ -25,7 +25,7 @@ app.service( 'FavouritesService', function( DriveService, Model, Database, $http
         },
 
         removeTrackFromFavourites: function( track, callback ) {
-            DriveService.drive.files.patch( {
+            GapiService.drive.files.patch( {
                 'fileId': track.id,
                 'resource': {
                     "labels": {

@@ -1,4 +1,4 @@
-app.controller( 'topBarCtrl', function( $scope, Service, Model ) {
+app.controller( 'topBarCtrl', function( $scope, Model ) {
 
     $scope.model = Model;
 

@@ -29,7 +29,7 @@ app.service( 'Database', [ '$http', function() {
                 keyPath: "id"
             } );
 
-            var properties = [ "title", "shared", "starred", "artist", "artistId", "album", "albumId" ];
+            var properties = [ "title", "type", "shared", "starred", "artist", "artistId", "album", "albumId" ];
 
             properties.forEach( function( property ) {
                 tracksStore.createIndex( property, property, {

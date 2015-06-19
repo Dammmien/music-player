@@ -1,7 +1,7 @@
 <div class="header">
     <div class="row">
-        <div class="col col40" ng-click="orderByField = 'name'; reverseSort = !reverseSort">
-            Artist <span ng-show="orderByField == 'name'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
+        <div class="col col40" ng-click="orderByField = 'title'; reverseSort = !reverseSort">
+            Artist <span ng-show="orderByField == 'title'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
         </div>
         <div class="col col60" ng-click="orderByField = 'tracks'; reverseSort = !reverseSort">
             Tracks <span ng-show="orderByField == 'tracks'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
@@ -11,11 +11,12 @@
 
 <div class="body">
     <div class="row" ng-repeat="artist in filteredList = ( model.artistsList | filter:model.filter | orderBy:orderByField:reverseSort ) | limitTo:listLimit">
-        <div class="col col40">{{artist.name}}</div>
+        <div class="col col40">{{artist.title}}</div>
         <div class="col col30">{{artist.tracks.length}} tracks</div>
         <div class="col col30 right">
             <span class="icon icon-play-outline" ng-click="onPlayTracks( artist.tracks )"></span>
             <span class="icon icon-queue-add" ng-click="onAddTracksToWaitingTracks( artist.tracks )" ng-if="model.currentTrack"></span>
+            <span class="icon icon-share" ng-click="onOpenShareDialog( artist )"></span>
         </div>
     </div>
     <div class="row" ng-if="listLimit < filteredList.length">

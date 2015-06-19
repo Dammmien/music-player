@@ -1,11 +1,11 @@
-app.service( 'PlaylistsService', function( DriveService, Model, $http ) {
+app.service( 'PlaylistsService', function( GapiService, Model, $http ) {
 
     var service = {
 
         boundary: '-------314159265358979323846',
 
         checkPlaylists: function( callback ) {
-            DriveService.drive.children.list( {
+            GapiService.drive.children.list( {
                 'folderId': 'appfolder',
             } ).execute( function( appFolder ) {
                 if ( appFolder.items.length === 0 ) {
@@ -18,7 +18,7 @@ app.service( 'PlaylistsService', function( DriveService, Model, $http ) {
         },
 
         getPlaylists: function( callback ) {
-            DriveService.drive.files.get( {
+            GapiService.drive.files.get( {
                 'fileId': this.playlistsFile.id,
                 alt: 'media'
             } ).execute( function( resp ) {
@@ -55,13 +55,13 @@ app.service( 'PlaylistsService', function( DriveService, Model, $http ) {
         createPlaylistFile: function( callback ) {
 
             var obj = [ {
-                name: "My first playlist",
+                title: "My first playlist",
                 tracks: []
             } ];
 
             var body = this.buildPlaylistFileContent( JSON.stringify( obj ) );
 
-            DriveService.client.request( {
+            GapiService.client.request( {
                 path: '/upload/drive/v2/files',
                 method: 'POST',
                 params: {
@@ -82,7 +82,7 @@ app.service( 'PlaylistsService', function( DriveService, Model, $http ) {
 
             var body = this.buildPlaylistFileContent( angular.toJson( Model.playlistsList ) );
 
-            DriveService.client.request( {
+            GapiService.client.request( {
                 path: '/upload/drive/v2/files/' + this.playlistsFile.id,
                 method: 'PUT',
                 params: {

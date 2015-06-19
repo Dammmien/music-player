@@ -1,4 +1,4 @@
-app.controller( 'favouritesListCtrl', function( $scope, Service, Model ) {
+app.controller( 'favouritesListCtrl', function( $scope, Model ) {
 
     $scope.model = Model;
 

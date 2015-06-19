@@ -1,22 +1,35 @@
-app.controller( 'mainCtrl', function( $scope, $window, Service, PlaylistsService, PlayerService, FavouritesService, NotificationsService, DriveService, Model, Database, ngDialog ) {
+app.controller( 'mainCtrl', function(
+    $scope,
+    $window,
+    DriveParserService,
+    PlaylistsService,
+    PlayerService,
+    SharingService,
+    FavouritesService,
+    NotificationsService,
+    GapiService,
+    Model,
+    Database,
+    ngDialog
+) {
 
     $scope.model = Model;
 
     $window.initGapi = function() {
-        DriveService.checkAuth( function() {
+        GapiService.checkAuth( function() {
             NotificationsService.checkPermission();
             PlaylistsService.checkPlaylists( function() {
                 $scope.$apply();
             }.bind( this ) );
             Database.init( function( dbExist ) {
                 if ( !dbExist ) {
-                    Service.getTracks( function() {
+                    DriveParserService.getDriveContent( function() {
                         $scope.$apply();
                     } );
                 } else {
                     Database.getAll( function( results ) {
                         $scope.model.tracksList = results;
-                        Service.setTracksByArtistAndAlbum();
+                        DriveParserService.setTracksByArtistAndAlbum();
                         FavouritesService.setFavourites();
                         $scope.$apply();
                     }.bind( this ) );
@@ -34,15 +47,7 @@ app.controller( 'mainCtrl', function( $scope, $window, Service, PlaylistsService
     };
 
     $scope.onShare = function() {
-        DriveService.drive.permissions.insert( {
-            'fileId': $scope.model.sharingItem.id,
-            'resource': {
-                value: $scope.model.sharingMail,
-                type: 'user',
-                role: 'reader'
-            }
-        } ).execute( function( resp ) {
-            console.log( resp );
+        SharingService.shareItem( $scope.model.sharingItem, $scope.model.sharingMail, function() {
             $scope.openedDialog.close();
         } );
     };
