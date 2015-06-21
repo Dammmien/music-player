@@ -1,7 +1,7 @@
 app.service( 'Model', function() {
 
     var model = {
-        tracks: [],
+        tracksList: [],
         currentTrack: null,
         playedTracks: [],
         waitingTracks: [],

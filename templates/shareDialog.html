@@ -1,2 +1,6 @@
-<input type="text" ng-model="model.sharingMail" placeholder="Enter an email address"/>
-<button ng-click="onShare()">Share</button>
+Enter the email of the person with whom you want to share <span class="item-to-share">{{ngDialogData.item.title}}</span>.
+
+<div class="share-form">
+    <input type="text" ng-model="ngDialogData.email" placeholder="Enter an email address"/>
+    <button class="active" ng-click="onShare(ngDialogData)">Share</button>
+</div>

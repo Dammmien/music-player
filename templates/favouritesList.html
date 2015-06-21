@@ -20,14 +20,14 @@
         <div class="col col20">{{track.artist}}</div>
         <div class="col col20 right">
             <span class="icon icon-play-outline" ng-click="onPlayTrack( track )"></span>
-            <span class="icon icon-star" ng-click="onRemoveTrackFromFavourites( track )"></span>
+            <span class="icon icon-favourite-filled" ng-click="onRemoveTrackFromFavourites( track )"></span>
             <span class="icon icon-queue-add" ng-click="onAddTrackToWaitingTracks( track )" ng-if="model.currentTrack"></span>
             <span class="icon icon-playlist-add" ng-click="onOpenPlaylistsList( track )"></span>
         </div>
     </div>
     <div class="row" ng-if="listLimit < filteredList.length">
-        <div class="col center" ng-click="onShowMore(listLimit)">
-            Show more favourites tracks
+        <div class="col center">
+            <button class="active show-more" ng-click="onShowMore(listLimit)">Show more artists</button>
         </div>
     </div>
 </div>

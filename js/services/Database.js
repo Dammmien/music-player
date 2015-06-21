@@ -2,34 +2,26 @@ app.service( 'Database', [ '$http', function() {
 
     var service = {
         init: function( callback ) {
-
             var request = window.indexedDB.open( "tracks" );
 
             request.onsuccess = function( event ) {
-                // db exists
-                this.setDB( event );
-                callback( true );
+                this.db = event.target.result;
+                callback();
             }.bind( this );
 
             request.onupgradeneeded = function( event ) {
-                // db doesn't exists
-                this.buildDB( event );
-                callback( false );
+                this.db = event.target.result;
+                this.buildDB();
             }.bind( this );
         },
 
-        setDB: function( event ) {
-            this.db = event.target.result;
-        },
-
-        buildDB: function( event ) {
-            this.setDB( event );
+        buildDB: function() {
 
             tracksStore = this.db.createObjectStore( "tracks", {
                 keyPath: "id"
             } );
 
-            var properties = [ "title", "type", "shared", "starred", "artist", "artistId", "album", "albumId" ];
+            var properties = [ "title", "starred", "artist", "artistId", "album", "albumId" ];
 
             properties.forEach( function( property ) {
                 tracksStore.createIndex( property, property, {
@@ -63,10 +55,16 @@ app.service( 'Database', [ '$http', function() {
         },
 
         addAll: function( items, success ) {
+
             var tracksTransaction = this.db.transaction( [ "tracks" ], "readwrite" ),
                 tracksStore = tracksTransaction.objectStore( "tracks" );
 
             items.forEach( function( item, index ) {
+                tracksTransaction.onerror = function( err ) {
+                    console.log( err );
+                    console.log( index );
+                    console.log( item );
+                };
                 tracksStore.add( item );
             } );
 

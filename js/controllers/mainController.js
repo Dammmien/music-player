@@ -21,35 +21,39 @@ app.controller( 'mainCtrl', function(
             PlaylistsService.checkPlaylists( function() {
                 $scope.$apply();
             }.bind( this ) );
-            Database.init( function( dbExist ) {
-                if ( !dbExist ) {
-                    DriveParserService.getDriveContent( function() {
-                        $scope.$apply();
-                    } );
-                } else {
-                    Database.getAll( function( results ) {
+            Database.init( function() {
+                Database.getAll( function( results ) {
+                    if ( results.length > 0 ) {
                         $scope.model.tracksList = results;
                         DriveParserService.setTracksByArtistAndAlbum();
                         FavouritesService.setFavourites();
                         $scope.$apply();
-                    }.bind( this ) );
-                }
+                    } else {
+                        DriveParserService.getDriveContent( function() {
+                            $scope.$apply();
+                        } );
+                    }
+                }.bind( this ) );
             } );
         } );
     };
 
-    $scope.onOpenShareDialog = function( item ) {
-        $scope.model.sharingItem = item;
+    $scope.onOpenShareDialog = function( item, type ) {
         $scope.openedDialog = ngDialog.open( {
             template: '/templates/shareDialog.html',
-            scope: $scope
+            scope: $scope,
+            className: 'ngdialog-theme-default share-dialog',
+            data: {
+                item: item,
+                email: null,
+                type: type
+            }
         } );
     };
 
-    $scope.onShare = function() {
-        SharingService.shareItem( $scope.model.sharingItem, $scope.model.sharingMail, function() {
-            $scope.openedDialog.close();
-        } );
+    $scope.onShare = function( data ) {
+        SharingService.shareItem( data );
+        $scope.openedDialog.close();
     };
 
     $scope.onOpenPlaylistsList = function( track ) {

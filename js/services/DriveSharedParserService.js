@@ -4,10 +4,10 @@ app.service( 'DriveSharedParserService', function( Model ) {
 
         init: function( folders, tracks ) {
             this.sharedFolders = folders.filter( function( item ) {
-                return item.shared;
+                return _.pluck( item.owners, 'isAuthenticatedUser' ).indexOf( true ) === -1;
             } );
             this.sharedTracks = tracks.filter( function( item ) {
-                return item.shared;
+                return _.pluck( item.owners, 'isAuthenticatedUser' ).indexOf( true ) === -1;
             } );
             this.findTracksWithoutAlbumOrArtist();
             this.findArtistsAndAlbums();
@@ -26,8 +26,6 @@ app.service( 'DriveSharedParserService', function( Model ) {
                 Model.tracksList.push( {
                     title: track.title.replace( '.' + track.fileExtension, '' ),
                     id: track.id,
-                    type: 'track',
-                    shared: 1,
                     starred: track.labels.starred ? 1 : 0,
                     artist: properties.artist || 'Unknow',
                     artistId: null,
@@ -71,8 +69,6 @@ app.service( 'DriveSharedParserService', function( Model ) {
                 Model.tracksList.push( {
                     title: track.title.replace( '.' + track.fileExtension, '' ),
                     id: track.id,
-                    type: 'track',
-                    shared: track.shared ? 1 : 0,
                     starred: track.labels.starred ? 1 : 0,
                     artist: artist.title || 'Unknow',
                     artistId: artist.id,

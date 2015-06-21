@@ -9,9 +9,7 @@ app.service( 'GapiService', function() {
             'https://www.googleapis.com/auth/drive.file',
             'https://www.googleapis.com/auth/drive.metadata',
             'https://www.googleapis.com/auth/drive.appfolder',
-            'https://www.googleapis.com/auth/drive.appdata',
-            'email',
-            'profile'
+            'https://www.googleapis.com/auth/drive.appdata'
         ],
 
         checkAuth: function( callback ) {
@@ -19,14 +17,14 @@ app.service( 'GapiService', function() {
             gapi.auth.authorize( {
                     'client_id': this.CLIENT_ID,
                     'scope': this.SCOPES,
-                    'immediate': false
+                    'immediate': true
                 },
                 this.handleAuthResult.bind( this )
             );
         },
 
         handleAuthResult: function( authResult ) {
-            if ( authResult ) {
+            if ( authResult.status.signed_in ) {
                 this.authResult = authResult;
                 gapi.client.load( 'drive', 'v2', function() {
                     this.drive = gapi.client.drive;

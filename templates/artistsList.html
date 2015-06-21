@@ -16,12 +16,12 @@
         <div class="col col30 right">
             <span class="icon icon-play-outline" ng-click="onPlayTracks( artist.tracks )"></span>
             <span class="icon icon-queue-add" ng-click="onAddTracksToWaitingTracks( artist.tracks )" ng-if="model.currentTrack"></span>
-            <span class="icon icon-share" ng-click="onOpenShareDialog( artist )"></span>
+            <span class="icon icon-share" ng-click="onOpenShareDialog( artist, 'artist' )"></span>
         </div>
     </div>
     <div class="row" ng-if="listLimit < filteredList.length">
-        <div class="col center" ng-click="onShowMore(listLimit)">
-            Show more artists
+        <div class="col center">
+            <button class="active show-more" ng-click="onShowMore(listLimit)">Show more artists</button>
         </div>
     </div>
 </div>

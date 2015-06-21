@@ -15,8 +15,12 @@
     float: right;
     border-radius: 3px;
     padding: 8px 10px;
-    margin: 17px 0;
+    margin: 20px 0;
     border: 0;
+    color: #999999;
+    outline: none;
+    background: #292929;
+    width: 200px;
 }
 
 .view-mode{

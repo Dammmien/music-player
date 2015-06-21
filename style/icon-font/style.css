@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'icon-font';
-	src:url('fonts/icon-font.eot?-wdfi7x');
-	src:url('fonts/icon-font.eot?#iefix-wdfi7x') format('embedded-opentype'),
-		url('fonts/icon-font.ttf?-wdfi7x') format('truetype'),
-		url('fonts/icon-font.woff?-wdfi7x') format('woff'),
-		url('fonts/icon-font.svg?-wdfi7x#icon-font') format('svg');
+	src:url('fonts/icon-font.eot?20d005');
+	src:url('fonts/icon-font.eot?#iefix20d005') format('embedded-opentype'),
+		url('fonts/icon-font.ttf?20d005') format('truetype'),
+		url('fonts/icon-font.woff?20d005') format('woff'),
+		url('fonts/icon-font.svg?20d005#icon-font') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -68,9 +68,6 @@
 .icon-queue-add:before {
 	content: "\e01e";
 }
-.icon-queue:before {
-	content: "\e01f";
-}
 .icon-playlist-add:before {
 	content: "\e020";
 }
@@ -101,17 +98,14 @@
 .icon-volume-middle:before {
 	content: "\e030";
 }
-.icon-volume_down:before {
+.icon-volume-down:before {
 	content: "\e031";
 }
-.icon-volume_off:before {
+.icon-volume-off:before {
 	content: "\e032";
 }
 .icon-volume-up:before {
 	content: "\e033";
-}
-.icon-sort-alpha:before {
-	content: "\e036";
 }
 .icon-edit:before {
 	content: "\e0ee";
@@ -137,29 +131,17 @@
 .icon-track:before {
 	content: "\e136";
 }
-.icon-list:before {
-	content: "\e15c";
-}
 .icon-cloud-filled:before {
 	content: "\e1be";
-}
-.icon-items:before {
-	content: "\e1ff";
 }
 .icon-check:before {
 	content: "\e206";
 }
+.icon-three-dots:before {
+	content: "\e20f";
+}
 .icon-share:before {
 	content: "\e25a";
-}
-.icon-star:before {
-	content: "\e260";
-}
-.icon-star-half:before {
-	content: "\e261";
-}
-.icon-star-outline:before {
-	content: "\e262";
 }
 .icon-delete:before {
 	content: "\e287";

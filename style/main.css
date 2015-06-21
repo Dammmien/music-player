@@ -25,3 +25,37 @@ html,body{
     box-sizing: border-box;
     background: #FFFFFF;
 }
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    font-size: 14px;
+    padding: 20px;
+    line-height: 25px;
+}
+
+input{
+    padding: 8px 10px;
+    line-height: 20px;
+    border-radius: 3px;
+    border: 1px solid #DDDDDD;
+    color: #333333;
+    outline: none;
+}
+
+button{
+    padding: 10px;
+    outline: none;
+    border-radius: 3px;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+button:hover{
+    opacity: 0.8;
+}
+
+button.active{
+    background: #00AEEF;
+    border: 1px solid #0096CC;
+    color: #FFFFFF;
+}

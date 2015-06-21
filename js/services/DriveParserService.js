@@ -5,7 +5,7 @@ app.service( 'DriveParserService', function( GapiService, FavouritesService, Dri
         items: [],
 
         setTracksByArtistAndAlbum: function() {
-            var artistsDictionary = _.groupBy( Model.tracksList, 'artist' );
+            var artistsDictionary = _.groupBy( Model.tracksList, 'artistId' );
             var albumsDictionary = _.groupBy( Model.tracksList, 'albumId' );
 
             Model.artistsList = [];
@@ -14,7 +14,6 @@ app.service( 'DriveParserService', function( GapiService, FavouritesService, Dri
             for ( var artistId in artistsDictionary ) {
                 Model.artistsList.push( {
                     title: artistsDictionary[ artistId ][ 0 ].artist,
-                    type: 'artist',
                     id: artistId,
                     tracks: artistsDictionary[ artistId ]
                 } );
@@ -23,7 +22,6 @@ app.service( 'DriveParserService', function( GapiService, FavouritesService, Dri
             for ( var albumId in albumsDictionary ) {
                 Model.albumsList.push( {
                     title: albumsDictionary[ albumId ][ 0 ].album,
-                    type: 'album',
                     id: albumId,
                     tracks: albumsDictionary[ albumId ],
                     artist: albumsDictionary[ albumId ][ 0 ].artist
@@ -34,7 +32,7 @@ app.service( 'DriveParserService', function( GapiService, FavouritesService, Dri
         getDriveContent: function( callback, nextPageToken ) {
             GapiService.drive.files.list( {
                 maxResults: 500,
-                fields: 'nextPageToken,items(title,id,parents,labels(starred),shared,fileExtension,mimeType,properties,sharingUser)',
+                fields: 'nextPageToken,items(title,id,parents,labels(starred),fileExtension,mimeType,owners,properties)',
                 q: 'trashed=false and ( mimeType = "application/vnd.google-apps.folder" or mimeType = "audio/mpeg" )',
                 pageToken: nextPageToken
             } ).execute( function( resp ) {
@@ -51,8 +49,8 @@ app.service( 'DriveParserService', function( GapiService, FavouritesService, Dri
             Database.addAll( Model.tracksList, function() {
                 this.setTracksByArtistAndAlbum();
                 FavouritesService.setFavourites();
+                callback();
             }.bind( this ) );
-            callback();
         },
 
         separateFoldersAndTracks: function() {

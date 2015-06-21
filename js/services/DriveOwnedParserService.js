@@ -4,15 +4,16 @@ app.service( 'DriveOwnedParserService', function( Model ) {
 
         init: function( folders, tracks ) {
             this.ownedFolders = folders.filter( function( item ) {
-                console.log( item.item.sharingUser );
-                return !item.shared || ( item.sharingUser && item.sharingUser.isAuthenticatedUser )
+                return _.pluck( item.owners, 'isAuthenticatedUser' ).indexOf( true ) > -1;
             } );
             this.ownedTracks = tracks.filter( function( item ) {
-                return !item.shared || ( item.sharingUser && item.sharingUser.isAuthenticatedUser )
+                return _.pluck( item.owners, 'isAuthenticatedUser' ).indexOf( true ) > -1;
             } );
             this.setRootFolder();
-            this.findTracksWithoutAlbumOrArtist();
-            this.findArtistsAndAlbums();
+            if ( this.rootFolder ) {
+                this.findTracksWithoutAlbumOrArtist();
+                this.findArtistsAndAlbums();
+            }
         },
 
         setRootFolder: function() {
@@ -41,15 +42,13 @@ app.service( 'DriveOwnedParserService', function( Model ) {
 
         findTracksForAFolder: function( parentFolder, artist, album ) {
             this.ownedTracks.filter( function( item ) {
-                return item.parents[ 0 ].id === parentFolder.id;
+                return item.parents.length > 0 && item.parents[ 0 ].id === parentFolder.id;
             }, this ).forEach( function( track ) {
                 artist = artist || {};
                 album = album || {};
                 Model.tracksList.push( {
                     title: track.title.replace( '.' + track.fileExtension, '' ),
                     id: track.id,
-                    type: 'track',
-                    shared: track.shared ? 1 : 0,
                     starred: track.labels.starred ? 1 : 0,
                     artist: artist.title || 'Unknow',
                     artistId: artist.id,

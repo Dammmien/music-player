@@ -2,26 +2,26 @@ app.service( 'SharingService', function( GapiService ) {
 
     var service = {
 
-        shareItem: function( item, mail, callback ) {
+        shareItem: function( data ) {
             GapiService.drive.permissions.insert( {
-                'fileId': item.id,
+                'fileId': data.item.id,
                 'resource': {
-                    value: mail,
+                    value: data.email,
                     type: 'user',
                     role: 'reader'
                 }
             } ).execute( function( resp ) {
-                this.insertItemProperty( item, callback );
+                this.insertItemProperty( data );
             }.bind( this ) );
         },
 
-        insertItemProperty: function( item, callback ) {
-            var type = item.type,
-                artist = item.artist || "",
-                album = item.album || "";
+        insertItemProperty: function( data ) {
+            var type = data.type,
+                artist = data.item.artist || "",
+                album = data.item.album || "";
 
             GapiService.drive.properties.insert( {
-                'fileId': item.id,
+                'fileId': data.item.id,
                 'resource': {
                     'key': 'mpitem',
                     'value': JSON.stringify( {
@@ -32,7 +32,7 @@ app.service( 'SharingService', function( GapiService ) {
                     'visibility': 'PRIVATE'
                 }
             } ).execute( function( resp ) {
-                callback();
+
             }.bind( this ) );
         }
 

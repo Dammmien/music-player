@@ -17,18 +17,23 @@
         <div class="col col30">{{track.title}}</div>
         <div class="col col30">{{track.album}}</div>
         <div class="col col20">{{track.artist}}</div>
-        <div class="col col20 right">
+        <div class="col col20 right actions">
             <span class="icon icon-play-outline" ng-click="onPlayTrack( track )"></span>
             <span class="icon icon-favourite-filled" ng-click="onRemoveTrackFromFavourites( track )" ng-if="track.starred === 1"></span>
             <span class="icon icon-favourite-outline" ng-click="onAddTrackToFavourites( track )" ng-if="track.starred === 0"></span>
             <span class="icon icon-queue-add" ng-click="onAddTrackToWaitingTracks( track )" ng-if="model.currentTrack"></span>
-            <span class="icon icon-share" ng-click="onOpenShareDialog( track )"></span>
-            <span class="icon icon-playlist-add" ng-click="onOpenPlaylistsList( track )"></span>
+
+            <span class="icon icon-three-dots" ng-click="openOtherActions = !openOtherActions">
+                <ul class="other-action" ng-show="openOtherActions" ng-mouseleave="openOtherActions = false" ng-click="openOtherActions = false">
+                    <li ng-click="onOpenShareDialog( track, 'track' )"><span class="icon icon-share"></span>Share</li>
+                    <li ng-click="onOpenPlaylistsList( track )"><span class="icon icon-playlist-add"></span>Add to a playlist</li>
+                </ul>
+            </span>
         </div>
     </div>
     <div class="row" ng-if="listLimit < filteredList.length">
-        <div class="col center" ng-click="onShowMore(listLimit)">
-            Show more tracks
+        <div class="col center">
+            <button class="active show-more" ng-click="onShowMore(listLimit)">Show more artists</button>
         </div>
     </div>
 </div>
