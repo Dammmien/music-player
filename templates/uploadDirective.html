@@ -1,0 +1,13 @@
+<input type="file" multiple/>
+<ul class="files-list">
+    <li ng-repeat="file in filesList">
+        <div class="title">{{$index + '-' + file.title}}</div>
+        <div class="artist">{{file.artist}}</div>
+        <div class="album">{{file.album}}</div>
+    </li>
+</ul>
+<div class="clear"></div>
+<div class="button-bar">
+    <button class="active" ng-if="filesList.length > 0" ng-click="onUpload()">Upload</button>
+    <button class="" ng-if="filesList.length > 0">Empty list</button>
+</div>

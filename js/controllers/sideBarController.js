@@ -1,4 +1,4 @@
-app.controller( 'sideBarCtrl', function( $scope, PlayerService, Model ) {
+app.controller( 'sideBarCtrl', function( $scope, PlayerService, Model, ngDialog ) {
 
     $scope.model = Model;
 
@@ -22,6 +22,14 @@ app.controller( 'sideBarCtrl', function( $scope, PlayerService, Model ) {
 
     $scope.onShuffleWaitingTracks = function() {
         PlayerService.shuffleWaitingTracks();
+    };
+
+    $scope.onOpenUploadDialog = function() {
+        $scope.openedDialog = ngDialog.open( {
+            template: '/templates/uploadDialog.html',
+            scope: $scope,
+            className: 'ngdialog-theme-default upload-dialog'
+        } );
     };
 
 } );

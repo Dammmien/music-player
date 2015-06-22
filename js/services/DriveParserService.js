@@ -44,6 +44,7 @@ app.service( 'DriveParserService', function( GapiService, FavouritesService, Dri
 
         handleItems: function( callback ) {
             this.separateFoldersAndTracks();
+            this.findItemsWithProperties();
             DriveOwnedParserService.init( this.folders, this.tracks );
             DriveSharedParserService.init( this.folders, this.tracks );
             Database.addAll( Model.tracksList, function() {
@@ -51,6 +52,12 @@ app.service( 'DriveParserService', function( GapiService, FavouritesService, Dri
                 FavouritesService.setFavourites();
                 callback();
             }.bind( this ) );
+        },
+
+        findItemsWithProperties: function() {
+            console.log( this.items.filter( function( item ) {
+                return item.properties
+            } ) );
         },
 
         separateFoldersAndTracks: function() {

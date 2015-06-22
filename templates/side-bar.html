@@ -3,7 +3,7 @@
     Superlogo
 </div>
 
-<div id="player-container" ng-show="model.currentTrack.title">
+<div id="player-container" ng-show="model.currentTrack">
     <player></player>
 </div>
 
@@ -25,4 +25,5 @@
     <span class="icon icon-shuffle" ng-click="onShuffleWaitingTracks()" title="Shuffle waiting tracks"></span>
     <span class="icon icon-radio" ng-click="onPlayRandomTracks()" title="Play random tracks"></span>
     <span class="icon icon-delete" ng-click="onRemoveWaitingTracks()" title="Remove waiting tracks"></span>
+    <span class="icon icon-cloud-filled" ng-click="onOpenUploadDialog()" title="Upload tracks"></span>
 </div>
