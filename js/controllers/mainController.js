@@ -38,21 +38,20 @@ app.controller( 'mainCtrl', function(
         } );
     };
 
-    $scope.onOpenShareDialog = function( item, type ) {
+    $scope.onOpenShareDialog = function( tracks ) {
         $scope.openedDialog = ngDialog.open( {
             template: '/templates/shareDialog.html',
             scope: $scope,
             className: 'ngdialog-theme-default share-dialog',
             data: {
-                item: item,
-                email: null,
-                type: type
+                tracks: tracks,
+                email: null
             }
         } );
     };
 
     $scope.onShare = function( data ) {
-        SharingService.shareItem( data );
+        SharingService.shareTracks( data );
         $scope.openedDialog.close();
     };
 

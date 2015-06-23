@@ -27,7 +27,9 @@ app.controller( 'sideBarCtrl', function( $scope, PlayerService, Model, ngDialog 
     $scope.onOpenUploadDialog = function() {
         $scope.openedDialog = ngDialog.open( {
             template: '/templates/uploadDialog.html',
-            scope: $scope,
+            closeByDocument: false,
+            closeByEscape: false,
+            showClose: false,
             className: 'ngdialog-theme-default upload-dialog'
         } );
     };

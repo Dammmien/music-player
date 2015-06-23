@@ -20,7 +20,7 @@
         <div class="col col20 right">
             <span class="icon icon-play-outline" ng-click="onPlayTracks( album.tracks )"></span>
             <span class="icon icon-queue-add" ng-click="onAddTracksToWaitingTracks( album.tracks )" ng-if="model.currentTrack"></span>
-            <span class="icon icon-share" ng-click="onOpenShareDialog( album, 'album' )"></span>
+            <span class="icon icon-share" ng-click="onOpenShareDialog( album.tracks )"></span>
         </div>
     </div>
     <div class="row" ng-if="listLimit < filteredList.length">

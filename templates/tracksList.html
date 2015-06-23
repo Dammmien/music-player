@@ -25,7 +25,7 @@
 
             <span class="icon icon-three-dots" ng-click="openOtherActions = !openOtherActions">
                 <ul class="other-action" ng-show="openOtherActions" ng-mouseleave="openOtherActions = false" ng-click="openOtherActions = false">
-                    <li ng-click="onOpenShareDialog( track, 'track' )"><span class="icon icon-share"></span>Share</li>
+                    <li ng-click="onOpenShareDialog( [ track ] )"><span class="icon icon-share"></span>Share</li>
                     <li ng-click="onOpenPlaylistsList( track )"><span class="icon icon-playlist-add"></span>Add to a playlist</li>
                 </ul>
             </span>

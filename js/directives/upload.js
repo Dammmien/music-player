@@ -1,35 +1,68 @@
-app.directive( 'upload', function( UploadService ) {
+app.directive( 'upload', function( UploadService, Database, Model, $rootScope, DriveParserService ) {
 
     return {
+
         restrict: "E",
+
         templateUrl: '/templates/uploadDirective.html',
-        scope: {},
+
         controller: function( $scope ) {
 
-            $scope.onUpload = function() {
-                UploadService.uploadList( $scope.filesList )
+            $scope.onClose = function() {
+                $scope.closeThisDialog();
+                DriveParserService.setTracksByArtistAndAlbum();
+                $rootScope.$digest();
             };
 
-            $scope.recursiveRead = function( list ) {
+            $scope.uploadFile = function( file ) {
+                UploadService.uploadFile( file, function( resp ) {
+                    $scope.progress.current += 1;
+                    if ( resp && !resp.error ) {
+                        file.status = true;
+                        var track = {
+                            id: resp.id,
+                            starred: resp.labels.starred,
+                            title: file.title,
+                            artist: file.artist,
+                            album: file.album,
+                            year: file.year
+                        }
+                        Database.add( track );
+                        Model.tracksList.push( track );
+                    } else {
+                        file.status = false;
+                    }
+                    $scope.$digest();
+                    if ( $scope.selectedList.length > 0 ) $scope.recursiveRead();
+                    else $scope.onClose();
+                    $scope.uploadedList.push( file );
+                } );
+            };
 
-                var file = list.shift();
+            $scope.recursiveRead = function() {
+
+                var file = $scope.selectedList.shift();
                 var reader = new FileReader();
 
                 reader.onload = function( e ) {
-                    var dv = new jDataView( this.result );
-                    if ( dv.getString( 3, dv.byteLength - 128 ) === 'TAG' ) {
-                        $scope.filesList.push( {
+
+                    ID3.loadTags( file.name, function() {
+                        var tags = ID3.getAllTags( file.name );
+
+                        $scope.uploadFile( {
                             filename: file.name,
-                            title: dv.getString( 30, dv.tell() ),
-                            artist: dv.getString( 30, dv.tell() ),
-                            album: dv.getString( 30, dv.tell() ),
-                            year: dv.getString( 4, dv.tell() ),
-                            content: this.result,
-                            status: undefined
+                            title: tags.title,
+                            artist: tags.artist,
+                            album: tags.album,
+                            year: tags.year,
+                            content: e.target.result
                         } );
-                        if ( list.length > 0 ) $scope.recursiveRead( list );
-                        $scope.$digest();
-                    }
+
+                    }, {
+                        tags: [ 'title', 'artist', 'album', 'year' ],
+                        dataReader: FileAPIReader( file )
+                    } );
+
                 };
 
                 reader.readAsArrayBuffer( file );
@@ -37,16 +70,28 @@ app.directive( 'upload', function( UploadService ) {
             };
 
         },
+
         link: function( $scope, elements, attrs, ctrl ) {
             elements.on( 'change', function( evt ) {
-                $scope.filesList = [];
-                var list = [];
+                $scope.progress = null;
+                $scope.uploadedList = [];
+                $scope.selectedList = [];
                 for ( var i = 0; i < evt.target.files.length; i++ ) {
-                    list.push( evt.target.files[ i ] );
+                    $scope.selectedList.push( evt.target.files[ i ] );
                 }
-                $scope.recursiveRead( list );
+                $scope.selectedList = $scope.selectedList.filter( function( file ) {
+                    return file.type === "audio/mp3"
+                } );
+                if ( $scope.selectedList.length > 0 ) {
+                    $scope.progress = {
+                        end: $scope.selectedList.length,
+                        current: 0
+                    };
+                    $scope.recursiveRead();
+                }
             } );
         }
+
     };
 
 } );

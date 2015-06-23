@@ -4,10 +4,17 @@ app.service( 'UploadService', function( GapiService ) {
 
         boundary: '-------314159265358979323846',
 
-        uploadList: function( list ) {
-            var file = list.shift();
+        uploadList: function( filesList ) {
+            this.filesList = filesList;
+            this.counter = 0;
+        },
+
+        recursiveUpload: function() {
+            var file = this.filesList[ this.counter ];
             this.uploadFile( file, function( resp ) {
-                if ( list.length > 0 ) this.uploadList( list );
+                console.log( resp );
+                this.counter += 1;
+                if ( this.counter < this.filesList.length ) this.recursiveUpload();
             }.bind( this ) );
         },
 
@@ -46,10 +53,12 @@ app.service( 'UploadService', function( GapiService ) {
                     key: 'year',
                     value: file.year,
                     visibility: 'PRIVATE'
+                }, {
+                    key: 'type',
+                    value: 'track',
+                    visibility: 'PRIVATE'
                 } ]
             };
-
-            console.log( metadata );
 
             var base64Data = this.arrayBufferToBase64( file.content );
 

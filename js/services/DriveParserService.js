@@ -1,39 +1,38 @@
-app.service( 'DriveParserService', function( GapiService, FavouritesService, DriveOwnedParserService, DriveSharedParserService, Database, Model ) {
+app.service( 'DriveParserService', function( GapiService, FavouritesService, Database, Model ) {
 
     var service = {
 
         items: [],
 
         setTracksByArtistAndAlbum: function() {
-            var artistsDictionary = _.groupBy( Model.tracksList, 'artistId' );
-            var albumsDictionary = _.groupBy( Model.tracksList, 'albumId' );
+            var artistsDictionary = _.groupBy( Model.tracksList, 'artist' );
+            var albumsDictionary = _.groupBy( Model.tracksList, 'album' );
 
             Model.artistsList = [];
             Model.albumsList = [];
 
-            for ( var artistId in artistsDictionary ) {
+            for ( var artist in artistsDictionary ) {
                 Model.artistsList.push( {
-                    title: artistsDictionary[ artistId ][ 0 ].artist,
-                    id: artistId,
-                    tracks: artistsDictionary[ artistId ]
+                    title: artistsDictionary[ artist ][ 0 ].artist,
+                    tracks: artistsDictionary[ artist ]
                 } );
             }
 
-            for ( var albumId in albumsDictionary ) {
+            for ( var album in albumsDictionary ) {
                 Model.albumsList.push( {
-                    title: albumsDictionary[ albumId ][ 0 ].album,
-                    id: albumId,
-                    tracks: albumsDictionary[ albumId ],
-                    artist: albumsDictionary[ albumId ][ 0 ].artist
+                    title: albumsDictionary[ album ][ 0 ].album,
+                    tracks: albumsDictionary[ album ],
+                    artist: albumsDictionary[ album ][ 0 ].artist
                 } );
             }
         },
 
         getDriveContent: function( callback, nextPageToken ) {
             GapiService.drive.files.list( {
+                'folderId': 'appfolder',
                 maxResults: 500,
-                fields: 'nextPageToken,items(title,id,parents,labels(starred),fileExtension,mimeType,owners,properties)',
-                q: 'trashed=false and ( mimeType = "application/vnd.google-apps.folder" or mimeType = "audio/mpeg" )',
+                fields: 'nextPageToken,items(id,labels(starred),owners,properties(key,value))',
+                q: 'trashed=false and properties has { key="type" and value="track" and visibility="PRIVATE" }',
                 pageToken: nextPageToken
             } ).execute( function( resp ) {
                 this.items = this.items.concat( resp.items );
@@ -43,30 +42,22 @@ app.service( 'DriveParserService', function( GapiService, FavouritesService, Dri
         },
 
         handleItems: function( callback ) {
-            this.separateFoldersAndTracks();
-            this.findItemsWithProperties();
-            DriveOwnedParserService.init( this.folders, this.tracks );
-            DriveSharedParserService.init( this.folders, this.tracks );
+            this.items.forEach( function( item ) {
+                var track = {
+                    id: item.id,
+                    starred: item.labels.starred ? 1 : 0
+                };
+                item.properties.forEach( function( property ) {
+                    track[ property.key ] = property.value;
+                } );
+                Model.tracksList.push( track );
+            } );
+
             Database.addAll( Model.tracksList, function() {
                 this.setTracksByArtistAndAlbum();
                 FavouritesService.setFavourites();
                 callback();
             }.bind( this ) );
-        },
-
-        findItemsWithProperties: function() {
-            console.log( this.items.filter( function( item ) {
-                return item.properties
-            } ) );
-        },
-
-        separateFoldersAndTracks: function() {
-            this.folders = this.items.filter( function( item ) {
-                return item.mimeType === 'application/vnd.google-apps.folder';
-            }, this );
-            this.tracks = this.items.filter( function( item ) {
-                return item.mimeType === 'audio/mpeg';
-            }, this );
         }
 
     }

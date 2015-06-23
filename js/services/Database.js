@@ -21,7 +21,7 @@ app.service( 'Database', [ '$http', function() {
                 keyPath: "id"
             } );
 
-            var properties = [ "title", "starred", "artist", "artistId", "album", "albumId" ];
+            var properties = [ "title", "starred", "artist", "year", "album" ];
 
             properties.forEach( function( property ) {
                 tracksStore.createIndex( property, property, {
@@ -46,6 +46,9 @@ app.service( 'Database', [ '$http', function() {
         },
 
         add: function( item, success, error ) {
+
+            success = success || function() {};
+
             var tracksTransaction = this.db.transaction( [ "tracks" ], "readwrite" ),
                 tracksStore = tracksTransaction.objectStore( "tracks" );
 
@@ -60,11 +63,6 @@ app.service( 'Database', [ '$http', function() {
                 tracksStore = tracksTransaction.objectStore( "tracks" );
 
             items.forEach( function( item, index ) {
-                tracksTransaction.onerror = function( err ) {
-                    console.log( err );
-                    console.log( index );
-                    console.log( item );
-                };
                 tracksStore.add( item );
             } );
 

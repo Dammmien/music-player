@@ -2,7 +2,7 @@
     width: 700px;
 
     input{
-        width: 100%;
+        width: 90%;
     }
 
     .files-list{
@@ -16,8 +16,22 @@
 
         div{
             float: left;
-            width: 33%;
+            width: 25%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            .icon{
+                &.icon-forbidden{
+                    color: @red;
+                }
+                &.icon-check{
+                    color: @green;
+                }
+            }
+
         }
+
 
     }
 
