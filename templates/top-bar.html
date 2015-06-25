@@ -11,7 +11,7 @@
 </span>
 
 <span ng-click="onSelectMode('favourites')" ng-class="model.viewMode === 'favourites' ? 'active view-mode' : 'view-mode'">
-    Favourites [{{model.favouritesList.length}}]
+    Favourites [{{(model.tracksList | isFavourite).length}}]
 </span>
 
 <span ng-click="onSelectMode('playlists')" ng-class="model.viewMode === 'playlists' ? 'active view-mode' : 'view-mode'">

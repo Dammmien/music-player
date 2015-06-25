@@ -14,7 +14,7 @@
 </div>
 
 <div class="body">
-    <div class="row" ng-repeat="track in filteredList = ( model.favouritesList | filter:model.filter | orderBy:orderByField:reverseSort ) | limitTo:listLimit">
+    <div class="row" ng-repeat="track in filteredList = ( model.tracksList | isFavourite | filter:model.filter | orderBy:orderByField:reverseSort ) | limitTo:listLimit">
         <div class="col col30">{{track.title}}</div>
         <div class="col col30">{{track.album}}</div>
         <div class="col col20">{{track.artist}}</div>

@@ -874,32 +874,92 @@
 		{
 			"icon": {
 				"paths": [
-					"M810 768q52 0 90-38t38-90-38-90-90-38h-64v-22q0-98-68-166t-166-68q-80 0-142 48t-84 122h-30q-70 0-120 51t-50 121 50 120 120 50h554zM826 428q82 6 140 67t58 145q0 88-63 151t-151 63h-554q-106 0-181-75t-75-181q0-98 66-171t162-83q42-78 118-126t166-48q116 0 204 73t110 185z"
+					"M426 726l282-282-60-60-222 220-88-88-60 60zM826 428q82 6 140 67t58 145q0 88-63 151t-151 63h-554q-106 0-181-75t-75-181q0-98 66-171t162-83q42-78 118-126t166-48q116 0 204 73t110 185z"
 				],
 				"attrs": [
 					{}
 				],
 				"isMulticolor": false,
 				"tags": [
-					"cloud_queue"
+					"cloud_done"
 				],
-				"defaultCode": 57597,
+				"defaultCode": 57594,
 				"grid": 24
 			},
 			"attrs": [
 				{}
 			],
 			"properties": {
-				"order": 52,
-				"id": 253,
+				"order": 59,
+				"id": 250,
 				"prevSize": 24,
-				"code": 57597,
-				"name": "cloud-outline",
-				"ligatures": "cloud_queue"
+				"code": 57594,
+				"name": "cloud-check",
+				"ligatures": "cloud_done"
 			},
 			"setIdx": 0,
 			"setId": 0,
-			"iconIdx": 251
+			"iconIdx": 248
+		},
+		{
+			"icon": {
+				"paths": [
+					"M726 554h-128v-170h-172v170h-128l214 214zM826 428q82 6 140 67t58 145q0 88-63 151t-151 63h-554q-106 0-181-75t-75-181q0-98 66-171t162-83q42-78 118-126t166-48q116 0 204 73t110 185z"
+				],
+				"attrs": [
+					{}
+				],
+				"isMulticolor": false,
+				"tags": [
+					"cloud_download"
+				],
+				"defaultCode": 57595,
+				"grid": 24
+			},
+			"attrs": [
+				{}
+			],
+			"properties": {
+				"order": 58,
+				"id": 251,
+				"prevSize": 24,
+				"code": 57595,
+				"name": "cloud-download",
+				"ligatures": "cloud_download"
+			},
+			"setIdx": 0,
+			"setId": 0,
+			"iconIdx": 249
+		},
+		{
+			"icon": {
+				"paths": [
+					"M598 554h128l-214-212-214 212h128v172h172v-172zM826 428q82 6 140 67t58 145q0 88-63 151t-151 63h-554q-106 0-181-75t-75-181q0-98 66-171t162-83q42-78 118-126t166-48q116 0 204 73t110 185z"
+				],
+				"attrs": [
+					{}
+				],
+				"isMulticolor": false,
+				"tags": [
+					"cloud_upload"
+				],
+				"defaultCode": 57598,
+				"grid": 24
+			},
+			"attrs": [
+				{}
+			],
+			"properties": {
+				"order": 57,
+				"id": 254,
+				"prevSize": 24,
+				"code": 57598,
+				"name": "cloud-upload",
+				"ligatures": "cloud_upload"
+			},
+			"setIdx": 0,
+			"setId": 0,
+			"iconIdx": 252
 		},
 		{
 			"icon": {
@@ -1080,36 +1140,6 @@
 			"setIdx": 0,
 			"setId": 0,
 			"iconIdx": 308
-		},
-		{
-			"icon": {
-				"paths": [
-					"M826 428q82 6 140 67t58 145q0 88-63 151t-151 63h-554q-106 0-181-75t-75-181q0-98 66-171t162-83q42-78 118-126t166-48q116 0 204 73t110 185z"
-				],
-				"attrs": [
-					{}
-				],
-				"isMulticolor": false,
-				"tags": [
-					"wb_cloudy"
-				],
-				"defaultCode": 57790,
-				"grid": 24
-			},
-			"attrs": [
-				{}
-			],
-			"properties": {
-				"order": 53,
-				"id": 446,
-				"prevSize": 24,
-				"code": 57790,
-				"name": "cloud-filled",
-				"ligatures": "wb_cloudy"
-			},
-			"setIdx": 0,
-			"setId": 0,
-			"iconIdx": 443
 		},
 		{
 			"icon": {

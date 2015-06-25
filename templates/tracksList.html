@@ -14,9 +14,9 @@
 
 <div class="body">
     <div class="row" ng-repeat="track in filteredList = ( model.tracksList | filter:model.filter | orderBy:orderByField:reverseSort ) | limitTo:listLimit">
-        <div class="col col30">{{track.title}}</div>
-        <div class="col col30">{{track.album}}</div>
-        <div class="col col20">{{track.artist}}</div>
+        <div class="col col30">{{track.title || '-'}}</div>
+        <div class="col col30">{{track.album || '-'}}</div>
+        <div class="col col20">{{track.artist || '-'}}</div>
         <div class="col col20 right actions">
             <span class="icon icon-play-outline" ng-click="onPlayTrack( track )"></span>
             <span class="icon icon-favourite-filled" ng-click="onRemoveTrackFromFavourites( track )" ng-if="track.starred === 1"></span>

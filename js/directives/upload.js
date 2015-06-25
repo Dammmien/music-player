@@ -21,7 +21,7 @@ app.directive( 'upload', function( UploadService, Database, Model, $rootScope, D
                         file.status = true;
                         var track = {
                             id: resp.id,
-                            starred: resp.labels.starred,
+                            starred: 0,
                             title: file.title,
                             artist: file.artist,
                             album: file.album,
@@ -51,11 +51,11 @@ app.directive( 'upload', function( UploadService, Database, Model, $rootScope, D
 
                         $scope.uploadFile( {
                             filename: file.name,
-                            title: tags.title,
+                            title: tags.title || file.name.replace( '.mp3', '' ),
                             artist: tags.artist,
                             album: tags.album,
                             year: tags.year,
-                            content: e.target.result
+                            content: e.target.result.split( ',' )[ 1 ]
                         } );
 
                     }, {
@@ -65,7 +65,7 @@ app.directive( 'upload', function( UploadService, Database, Model, $rootScope, D
 
                 };
 
-                reader.readAsArrayBuffer( file );
+                reader.readAsDataURL( file );
 
             };
 

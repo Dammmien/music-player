@@ -4,8 +4,8 @@ app.controller( 'mainCtrl', function(
     DriveParserService,
     PlaylistsService,
     PlayerService,
-    SharingService,
-    FavouritesService,
+    TrackService,
+    TrackService,
     NotificationsService,
     GapiService,
     Model,
@@ -26,7 +26,6 @@ app.controller( 'mainCtrl', function(
                     if ( results.length > 0 ) {
                         $scope.model.tracksList = results;
                         DriveParserService.setTracksByArtistAndAlbum();
-                        FavouritesService.setFavourites();
                         $scope.$apply();
                     } else {
                         DriveParserService.getDriveContent( function() {
@@ -51,7 +50,7 @@ app.controller( 'mainCtrl', function(
     };
 
     $scope.onShare = function( data ) {
-        SharingService.shareTracks( data );
+        TrackService.shareTracks( data );
         $scope.openedDialog.close();
     };
 
@@ -88,15 +87,15 @@ app.controller( 'mainCtrl', function(
     };
 
     $scope.onAddTrackToFavourites = function( track ) {
-        FavouritesService.addTrackToFavourites( track, function() {
-            $scope.$apply();
-        } );
+        TrackService.addTrackToFavourites( track );
     };
 
     $scope.onRemoveTrackFromFavourites = function( track ) {
-        FavouritesService.removeTrackFromFavourites( track, function() {
-            $scope.$apply();
-        } );
+        TrackService.removeTrackFromFavourites( track );
+    };
+
+    $scope.onDeleteTracks = function( tracks ) {
+        TrackService.deleteTracks( tracks );
     };
 
 } ).filter( 'formatTime', function() {

@@ -8,9 +8,9 @@
             <span ng-if="!file.status" class="icon icon-forbidden"></span>
             <span ng-if="file.status" class="icon icon-check"></span>
         </div>
-        <div class="title">{{file.title}}</div>
-        <div class="artist">{{file.artist}}</div>
-        <div class="album">{{file.album}}</div>
+        <div class="title">{{file.title || '-'}}</div>
+        <div class="artist">{{file.artist || '-'}}</div>
+        <div class="album">{{file.album || '-'}}</div>
     </li>
 </ul>
 <div class="clear"></div>
