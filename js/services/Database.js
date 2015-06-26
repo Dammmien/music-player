@@ -15,6 +15,10 @@ app.service( 'Database', [ '$http', function() {
             }.bind( this );
         },
 
+        deleteDatabase: function() {
+            window.indexedDB.deleteDatabase( 'tracks' );
+        },
+
         buildDB: function() {
 
             tracksStore = this.db.createObjectStore( "tracks", {
@@ -63,10 +67,10 @@ app.service( 'Database', [ '$http', function() {
                 tracksStore = tracksTransaction.objectStore( "tracks" );
 
             items.forEach( function( item, index ) {
-                tracksStore.add( item );
+                tracksStore.add( JSON.parse( angular.toJson( item ) ) ); // remove $$hashkey before save item
             } );
 
-            tracksTransaction.oncomplete = success();
+            tracksTransaction.oncomplete = success;
         },
 
         update: function( item ) {

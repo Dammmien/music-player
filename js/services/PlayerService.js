@@ -23,7 +23,9 @@ app.service( 'PlayerService', function( NotificationsService, Model, $document )
         },
 
         addToWaitingTracks: function( track ) {
-            Model.waitingTracks.push( track );
+            if ( Model.waitingTracks.indexOf( track ) === -1 ) {
+                Model.waitingTracks.push( track );
+            }
         },
 
         removeWaitingTracks: function() {

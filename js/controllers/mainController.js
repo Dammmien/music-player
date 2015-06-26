@@ -1,41 +1,17 @@
 app.controller( 'mainCtrl', function(
     $scope,
     $window,
-    DriveParserService,
     PlaylistsService,
+    MainService,
     PlayerService,
     TrackService,
-    TrackService,
-    NotificationsService,
-    GapiService,
     Model,
-    Database,
     ngDialog
 ) {
 
     $scope.model = Model;
 
-    $window.initGapi = function() {
-        GapiService.checkAuth( function() {
-            NotificationsService.checkPermission();
-            PlaylistsService.checkPlaylists( function() {
-                $scope.$apply();
-            }.bind( this ) );
-            Database.init( function() {
-                Database.getAll( function( results ) {
-                    if ( results.length > 0 ) {
-                        $scope.model.tracksList = results;
-                        DriveParserService.setTracksByArtistAndAlbum();
-                        $scope.$apply();
-                    } else {
-                        DriveParserService.getDriveContent( function() {
-                            $scope.$apply();
-                        } );
-                    }
-                }.bind( this ) );
-            } );
-        } );
-    };
+    $window.initGapi = MainService.init.bind( MainService )
 
     $scope.onOpenShareDialog = function( tracks ) {
         $scope.openedDialog = ngDialog.open( {

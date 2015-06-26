@@ -1,4 +1,4 @@
-app.service( 'UploadService', function( GapiService ) {
+app.service( 'UploadService', function( GapiService, DriveParserService ) {
 
     var service = {
 
@@ -13,10 +13,17 @@ app.service( 'UploadService', function( GapiService ) {
             var metadata = {
                 title: file.filename,
                 mimeType: contentType,
-                properties: []
+                parents: [ {
+                    "id": DriveParserService.rootFolder
+                } ],
+                properties: [ {
+                    key: 'type',
+                    value: 'track',
+                    visibility: 'PRIVATE'
+                } ]
             };
 
-            [ 'title', 'album', 'artist', 'year', 'type' ].forEach( function( property ) {
+            [ 'title', 'album', 'artist', 'year' ].forEach( function( property ) {
                 metadata.properties.push( {
                     key: property,
                     value: file[ property ],

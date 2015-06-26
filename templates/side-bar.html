@@ -7,16 +7,18 @@
     <player></player>
 </div>
 
-<ul id="waiting-tracks-container">
-    <li ng-repeat="track in model.waitingTracks track by $index" class="waiting-track">
-        <div class="waiting-track-title">
-            {{track.title}}
+<ul id="waiting-tracks-container" as-sortable="sortableOptions" ng-model="model.waitingTracks">
+    <li ng-repeat="track in model.waitingTracks" as-sortable-item class="waiting-track">
+        <div as-sortable-item-handle class="as-sortable-item-handle">
+            <div class="waiting-track-title">
+                {{track.title}}
+            </div>
+            <div class="waiting-track-artist">
+                {{track.artist}}
+            </div>
+            <div class="icon icon-remove" ng-click="onRemoveWaitingTrack($index)"></div>
+            <div class="icon icon-play-outline" ng-click="onPlayWaitingTrack($index)"></div>
         </div>
-        <div class="waiting-track-artist">
-            {{track.artist}}
-        </div>
-        <div class="icon icon-remove" ng-click="onRemoveWaitingTrack($index)"></div>
-        <div class="icon icon-play-outline" ng-click="onPlayWaitingTrack($index)"></div>
     </li>
 </ul>
 
@@ -26,4 +28,5 @@
     <span class="icon icon-radio" ng-click="onPlayRandomTracks()" title="Play random tracks"></span>
     <span class="icon icon-delete" ng-click="onRemoveWaitingTracks()" title="Remove waiting tracks"></span>
     <span class="icon icon-cloud-upload" ng-click="onOpenUploadDialog()" title="Upload tracks"></span>
+    <span class="icon icon-replay" ng-click="onResetApp()" title="Refresh from Drive"></span>
 </div>

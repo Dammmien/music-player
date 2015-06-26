@@ -1,29 +1,29 @@
-app.service( 'PlaylistsService', function( GapiService, Model, $http ) {
+app.service( 'PlaylistsService', function( GapiService, Model, $http, $rootScope ) {
 
     var service = {
 
         boundary: '-------314159265358979323846',
 
-        checkPlaylists: function( callback ) {
+        checkPlaylists: function() {
             GapiService.drive.children.list( {
                 'folderId': 'appfolder',
             } ).execute( function( appFolder ) {
                 if ( appFolder.items.length === 0 ) {
-                    this.createPlaylistFile( callback );
+                    this.createPlaylistFile();
                 } else {
                     this.playlistsFile = appFolder.items[ 0 ];
-                    this.getPlaylists( callback );
+                    this.getPlaylists();
                 }
             }.bind( this ) );
         },
 
-        getPlaylists: function( callback ) {
+        getPlaylists: function() {
             GapiService.drive.files.get( {
                 'fileId': this.playlistsFile.id,
                 alt: 'media'
             } ).execute( function( resp ) {
                 Model.playlistsList = resp.result;
-                callback();
+                $rootScope.$apply();
             }.bind( this ) );
         },
 
@@ -52,7 +52,7 @@ app.service( 'PlaylistsService', function( GapiService, Model, $http ) {
 
         },
 
-        createPlaylistFile: function( callback ) {
+        createPlaylistFile: function() {
 
             var obj = [ {
                 title: "My first playlist",
@@ -73,7 +73,7 @@ app.service( 'PlaylistsService', function( GapiService, Model, $http ) {
                 body: body
             } ).execute( function( resp ) {
                 Model.playlistsList = obj;
-                callback();
+                $rootScope.$apply();
             } );
 
         },

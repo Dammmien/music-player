@@ -1,4 +1,4 @@
-var app = angular.module( 'Application', [ 'ngRoute', 'ngDialog' ] );
+var app = angular.module( 'Application', [ 'ngRoute', 'ngDialog', 'ui.sortable' ] );
 
 var readyGapi = function() {
     window.initGapi();

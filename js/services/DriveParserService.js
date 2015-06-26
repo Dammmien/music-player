@@ -1,8 +1,18 @@
-app.service( 'DriveParserService', function( GapiService, Database, Model ) {
+app.service( 'DriveParserService', function( GapiService, Database, Model, $rootScope ) {
 
     var service = {
 
-        items: [],
+        rootFolder: 'root',
+
+        setRootFolder: function() {
+            GapiService.drive.files.list( {
+                maxResults: 500,
+                fields: 'items(id)',
+                q: 'trashed=false and "root" in parents and title="Music"'
+            } ).execute( function( resp ) {
+                if ( resp.items.length > 0 ) this.rootFolder = resp.items[ 0 ].id;
+            }.bind( this ) );
+        },
 
         setTracksByArtistAndAlbum: function() {
             Model.artistsList = _.map( _.groupBy( Model.tracksList, 'artist' ), function( tracks ) {
@@ -19,9 +29,10 @@ app.service( 'DriveParserService', function( GapiService, Database, Model ) {
                     year: tracks[ 0 ].year,
                 }
             } );
+            $rootScope.$apply();
         },
 
-        getDriveContent: function( callback, nextPageToken ) {
+        getDriveContent: function( nextPageToken ) {
             GapiService.drive.files.list( {
                 maxResults: 500,
                 fields: 'nextPageToken,items(id,labels(starred),owners,properties(key,value))',
@@ -29,12 +40,12 @@ app.service( 'DriveParserService', function( GapiService, Database, Model ) {
                 pageToken: nextPageToken
             } ).execute( function( resp ) {
                 this.items = this.items.concat( resp.items );
-                if ( resp.nextPageToken ) this.getDriveContent( callback, resp.nextPageToken );
-                else this.handleItems( callback );
+                if ( resp.nextPageToken ) this.getDriveContent( resp.nextPageToken );
+                else this.handleItems();
             }.bind( this ) );
         },
 
-        handleItems: function( callback ) {
+        handleItems: function() {
             this.items.forEach( function( item ) {
                 var track = {
                     id: item.id,
@@ -46,7 +57,7 @@ app.service( 'DriveParserService', function( GapiService, Database, Model ) {
                 Model.tracksList.push( track );
             } );
             this.setTracksByArtistAndAlbum();
-            Database.addAll( Model.tracksList, callback );
+            Database.addAll( Model.tracksList );
         }
 
     }
