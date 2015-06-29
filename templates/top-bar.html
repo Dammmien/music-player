@@ -1,21 +1,19 @@
-<span ng-click="onSelectMode('tracks')" ng-class="model.viewMode === 'tracks' ? 'active view-mode' : 'view-mode'">
+<div ng-click="onSelectMode('tracks')" ng-class="model.viewMode === 'tracks' ? 'active view-mode' : 'view-mode'">
     Tracks [{{model.tracksList.length}}]
-</span>
+</div>
 
-<span ng-click="onSelectMode('albums')" ng-class="model.viewMode === 'albums' ? 'active view-mode' : 'view-mode'">
+<div ng-click="onSelectMode('albums')" ng-class="model.viewMode === 'albums' ? 'active view-mode' : 'view-mode'">
     Albums [{{model.albumsList.length}}]
-</span>
+</div>
 
-<span ng-click="onSelectMode('artists')" ng-class="model.viewMode === 'artists' ? 'active view-mode' : 'view-mode'">
+<div ng-click="onSelectMode('artists')" ng-class="model.viewMode === 'artists' ? 'active view-mode' : 'view-mode'">
     Artists [{{model.artistsList.length}}]
-</span>
+</div>
 
-<span ng-click="onSelectMode('favourites')" ng-class="model.viewMode === 'favourites' ? 'active view-mode' : 'view-mode'">
+<div ng-click="onSelectMode('favourites')" ng-class="model.viewMode === 'favourites' ? 'active view-mode' : 'view-mode'">
     Favourites [{{(model.tracksList | isFavourite).length}}]
-</span>
+</div>
 
-<span ng-click="onSelectMode('playlists')" ng-class="model.viewMode === 'playlists' ? 'active view-mode' : 'view-mode'">
+<div ng-click="onSelectMode('playlists')" ng-class="model.viewMode === 'playlists' ? 'active view-mode' : 'view-mode'">
     Playlists [{{model.playlistsList.length}}]
-</span>
-
-<input ng-model="model.filter" type="text" id="search-input" placeholder="Search"/>
+</div>

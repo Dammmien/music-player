@@ -7,8 +7,11 @@
         <div class="col col30" ng-click="orderByField = 'album'; reverseSort = !reverseSort">
             Album <span ng-show="orderByField == 'album'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
         </div>
-        <div class="col col40" ng-click="orderByField = 'artist'; reverseSort = !reverseSort">
+        <div class="col col20" ng-click="orderByField = 'artist'; reverseSort = !reverseSort">
             Artist <span ng-show="orderByField == 'artist'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
+        </div>
+        <div class="col col20 right">
+            <input ng-model="model.filter" type="text" class="search-input" placeholder="Search"/>
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-app.service( 'DriveParserService', function( GapiService, Database, Model, $rootScope ) {
+app.service( 'DriveParserService', function( GapiService, LastFmService, Database, Model, $rootScope ) {
 
     var service = {
 
@@ -26,9 +26,12 @@ app.service( 'DriveParserService', function( GapiService, Database, Model, $root
                     title: tracks[ 0 ].album,
                     tracks: tracks,
                     artist: tracks[ 0 ].artist,
+                    artwork: tracks[ 0 ].albumArtwork,
+                    albumArtwork: tracks[ 0 ].albumArtwork,
                     year: tracks[ 0 ].year,
                 }
             } );
+            LastFmService.getAllArtworks();
             $rootScope.$apply();
         },
 

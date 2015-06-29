@@ -1,10 +1,5 @@
-<div id="logo-container">
-    <span class="round"></span>
-    Superlogo
-</div>
-
-<div id="player-container" ng-show="model.currentTrack">
-    <player></player>
+<div id="player-container">
+    <player ng-show="model.currentTrack"></player>
 </div>
 
 <ul id="waiting-tracks-container" as-sortable="sortableOptions" ng-model="model.waitingTracks">

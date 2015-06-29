@@ -1,0 +1,14 @@
+<div class="item" ng-repeat="album in filteredList = ( model.albumsList | filter:model.filter ) | limitTo:listLimit">
+    <img ng-src="{{album.artwork || './images/album-placeholder.png'}}"/>
+    <div class="title">{{album.title || '-'}}</div>
+    <div class="subtitle">{{album.artist || '-'}}</div>
+    <ul class="overlay">
+        <li ng-click="onPlayTracks( album.tracks )">Play</li>
+        <li ng-click="onAddTracksToWaitingTracks( album.tracks )">Add to the list</li>
+    </ul>
+</div>
+
+
+<div class="item" ng-if="listLimit < filteredList.length" ng-click="onShowMore(listLimit)">
+    Show more albums
+</div>
