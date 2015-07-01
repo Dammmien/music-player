@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'icon-font';
-	src:url('fonts/icon-font.eot?-myplwj');
-	src:url('fonts/icon-font.eot?#iefix-myplwj') format('embedded-opentype'),
-		url('fonts/icon-font.ttf?-myplwj') format('truetype'),
-		url('fonts/icon-font.woff?-myplwj') format('woff'),
-		url('fonts/icon-font.svg?-myplwj#icon-font') format('svg');
+	src:url('fonts/icon-font.eot?ly28e1');
+	src:url('fonts/icon-font.eot?#iefixly28e1') format('embedded-opentype'),
+		url('fonts/icon-font.ttf?ly28e1') format('truetype'),
+		url('fonts/icon-font.woff?ly28e1') format('woff'),
+		url('fonts/icon-font.svg?ly28e1#icon-font') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -160,6 +160,12 @@
 }
 .icon-settings:before {
 	content: "\e2cb";
+}
+.icon-view-list:before {
+	content: "\e301";
+}
+.icon-view-grid:before {
+	content: "\e302";
 }
 .icon-visibility-on:before {
 	content: "\e306";

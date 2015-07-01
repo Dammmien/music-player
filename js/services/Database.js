@@ -25,7 +25,7 @@ app.service( 'Database', [ '$http', function() {
                 keyPath: "id"
             } );
 
-            var properties = [ "title", "starred", "artist", "year", "album" ];
+            var properties = [ "title", "starred", "artist", "year", "album", "artistArtwork", "albumArtwork" ];
 
             properties.forEach( function( property ) {
                 tracksStore.createIndex( property, property, {

@@ -1,25 +1,25 @@
 <audio id="audio-tag" ng-src="model.currentTrack.url"></audio>
 
-<img ng-src="{{model.currentTrack.albumArtwork}}">
+<img ng-src="{{model.currentTrack.albumArtwork || './images/album-placeholder.png'}}">
 
 <div id="current-track-title">
-    {{model.currentTrack.title}}
+    {{model.currentTrack.title || '-'}}
 </div>
 
 <div id="current-track-artist">
-    by {{model.currentTrack.artist}}
+    {{model.currentTrack.artist || '-'}}
 </div>
 
-<div id="progress-bar-container" ng-if="model.currentTrack" ng-click="onSetCurrentTime($event)">
+<div id="progress-bar-container" ng-click="onSetCurrentTime($event)">
     <div id="progress-bar" style="width:{{player.currentTime / player.duration * 100}}%"></div>
 </div>
 
-<div id="current-time" ng-if="player.currentTime">
-    {{player.currentTime | formatTime}}
+<div id="current-time">
+    {{player.currentTime || 0 | formatTime}}
 </div>
 
-<div id="current-duration" ng-if="player.duration">
-    {{player.duration | formatTime}}
+<div id="current-duration">
+    {{player.duration || 0 | formatTime}}
 </div>
 
 <div id="player-button-bar">
@@ -32,3 +32,13 @@
 </div>
 
 <div class="clear"></div>
+
+<!--
+<div id="player-icons-bar">
+    <span class="icon icon-shuffle" ng-click="onShuffleWaitingTracks()" title="Shuffle waiting tracks" ng-if="model.waitingTracks.length > 1"></span>
+    <span class="icon icon-radio" ng-click="onPlayRandomTracks()" title="Play random tracks"></span>
+    <span class="icon icon-delete" ng-click="onRemoveWaitingTracks()" title="Remove waiting tracks" ng-if="model.waitingTracks.length > 1"></span>
+</div>
+
+<div class="clear"></div>
+-->

@@ -1,0 +1,24 @@
+<div class="item" ng-repeat="artist in filteredList = ( model.artistsList | filter:model.filter ) | limitTo:listLimit">
+    <div class="artwork" style="background-image: url({{artist.artistArtwork || './images/album-placeholder.png'}})">
+        <div class="overlay">
+            <div class="icon icon-play-outline" ng-click="onPlayTracks( artist.tracks )"></div>
+            <div class="icons-container">
+                <span class="icon icon-delete" ng-click="onDeleteTracks( artist.tracks )"></span>
+                <span class="icon icon-queue-add" ng-click="onAddTracksToWaitingTracks( artist.tracks )" ng-if="model.currentTrack"></span>
+                <span class="icon icon-share" ng-click="onOpenShareDialog( artist.tracks )"></span>
+            </div>
+        </div>
+    </div>
+    <div class="title">{{artist.title || '-'}}</div>
+    <div class="subtitle">{{artist.tracks.length || '-'}} tracks</div>
+</div>
+
+<div class="item more" ng-if="listLimit < filteredList.length" ng-click="onShowMore(listLimit)">
+    <div class="artwork">
+        <div class="overlay">
+            <div class="plus-icon">+</div>
+        </div>
+    </div>
+    <div class="title">Show more artists</div>
+    <div class="subtitle">{{filteredList.length - listLimit }} artists hidden</div>
+</div>

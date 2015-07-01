@@ -3,11 +3,8 @@
         <div class="col col40" ng-click="orderByField = 'title'; reverseSort = !reverseSort">
             Title <span ng-show="orderByField == 'title'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
         </div>
-        <div class="col col30" ng-click="orderByField = 'tracks'; reverseSort = !reverseSort">
+        <div class="col col60" ng-click="orderByField = 'tracks'; reverseSort = !reverseSort">
             Tracks <span ng-show="orderByField == 'tracks'" class="sort-indicator">{{reverseSort ? "▾" : "▴"}}</span>
-        </div>
-        <div class="col col30 right">
-            <input ng-model="model.filter" type="text" class="search-input" placeholder="Search"/>
         </div>
     </div>
 </div>

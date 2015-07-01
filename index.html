@@ -15,14 +15,11 @@
         <div class="items-list" ng-switch-when="tracks">
             <div ng-include="'templates/tracksList.html'" ng-controller="tracksListCtrl"></div>
         </div>
-<!--         <div class="items-list" ng-switch-when="albums">
-            <div ng-include="'templates/albumsList.html'" ng-controller="albumsListCtrl"></div>
-        </div> -->
         <div class="items-grid" ng-switch-when="albums">
             <div ng-include="'templates/albumsGrid.html'" ng-controller="albumsListCtrl"></div>
         </div>
-        <div class="items-list" ng-switch-when="artists">
-            <div ng-include="'templates/artistsList.html'" ng-controller="artistsListCtrl"></div>
+        <div class="items-grid" ng-switch-when="artists">
+            <div ng-include="'templates/artistsGrid.html'" ng-controller="artistsListCtrl"></div>
         </div>
         <div class="items-list" ng-switch-when="favourites">
             <div ng-include="'templates/favouritesList.html'" ng-controller="favouritesListCtrl"></div>

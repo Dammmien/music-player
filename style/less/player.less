@@ -1,17 +1,63 @@
 #player-container{
     position: absolute;
     top: 0;
-    height: 360px;
+    height: 330px;
     left: 0;
     right: 0;
     padding: 20px;
     background: @dark;
 
     img{
-        width: 260px;
-        height: 260px;
+        width: 230px;
+        height: 230px;
         margin: 0 0 10px 0;
+        background: #FFFFFF;
     }
+
+}
+
+#current-track-title,
+#current-track-artist{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#current-track-title{
+    font-size: 14px;
+    color: #FFFFFF;
+}
+
+#current-track-artist{
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 3px 0 0 0;
+}
+
+#progress-bar-container{
+    height: 4px;
+    background: rgba(255, 255, 255, 0.25);
+    margin: 15px 0 10px 0;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#progress-bar{
+    height: 100%;
+    background: #FFFFFF;
+    border-radius: 4px;
+}
+
+#current-time,
+#current-duration{
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    float: left;
+    margin: 3px 0 0 0;
+}
+
+#current-duration{
+    float: right;
 }
 
 #player-button-bar{
@@ -44,46 +90,11 @@
     font-size: 30px;
 }
 
-#progress-bar-container{
-    height: 4px;
-    background: rgba(255, 255, 255, 0.25);
-    margin: 15px 0 10px 0;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-#progress-bar{
-    height: 100%;
-    background: #FFFFFF;
-    border-radius: 4px;
-}
-
-#current-track-title,
-#current-track-artist{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#current-track-title{
-    font-size: 14px;
-    color: #FFFFFF;
-}
-
-#current-track-artist{
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
-    margin: 3px 0 0 0;
-}
-
-#current-time,
-#current-duration{
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.5);
-    float: left;
-    margin: 3px 0 0 0;
-}
-
-#current-duration{
-    float: right;
+#player-icons-bar{
+     .icon{
+        color: rgba(255, 255, 255, 0.5);
+        &:hover{
+            color: #FFFFFF;
+        }
+     }
 }

@@ -1,14 +1,24 @@
 <div class="item" ng-repeat="album in filteredList = ( model.albumsList | filter:model.filter ) | limitTo:listLimit">
-    <img ng-src="{{album.artwork || './images/album-placeholder.png'}}"/>
+    <div class="artwork" style="background-image: url({{album.albumArtwork || './images/album-placeholder.png'}})">
+        <div class="overlay">
+            <div class="icon icon-play-outline" ng-click="onPlayTracks( album.tracks )"></div>
+            <div class="icons-container">
+                <span class="icon icon-delete" ng-click="onDeleteTracks( album.tracks )"></span>
+                <span class="icon icon-queue-add" ng-click="onAddTracksToWaitingTracks( album.tracks )" ng-if="model.currentTrack"></span>
+                <span class="icon icon-share" ng-click="onOpenShareDialog( album.tracks )"></span>
+            </div>
+        </div>
+    </div>
     <div class="title">{{album.title || '-'}}</div>
     <div class="subtitle">{{album.artist || '-'}}</div>
-    <ul class="overlay">
-        <li ng-click="onPlayTracks( album.tracks )">Play</li>
-        <li ng-click="onAddTracksToWaitingTracks( album.tracks )">Add to the list</li>
-    </ul>
 </div>
 
-
-<div class="item" ng-if="listLimit < filteredList.length" ng-click="onShowMore(listLimit)">
-    Show more albums
+<div class="item more" ng-if="listLimit < filteredList.length" ng-click="onShowMore(listLimit)">
+    <div class="artwork">
+        <div class="overlay">
+            <div class="plus-icon">+</div>
+        </div>
+    </div>
+    <div class="title">Show more albums</div>
+    <div class="subtitle">{{filteredList.length - listLimit }} albums hidden</div>
 </div>

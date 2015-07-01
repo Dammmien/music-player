@@ -2605,17 +2605,14 @@ app.controller( 'sideBarCtrl', function( $scope, PlayerService, Model, ngDialog,
         PlayerService.setCurrentTrack( track );
     };
 
-    $scope.onRemoveWaitingTracks = function() {
-        PlayerService.removeWaitingTracks();
-    };
+} );
+app.controller( 'topBarCtrl', function( $scope, Model, ngDialog ) {
 
-    $scope.onPlayRandomTracks = function() {
-        var tracks = _.shuffle( Model.tracksList ).splice( 0, 100 );
-        PlayerService.playTracks( tracks );
-    };
+    $scope.model = Model;
 
-    $scope.onShuffleWaitingTracks = function() {
-        PlayerService.shuffleWaitingTracks();
+    $scope.onSelectMode = function( mode ) {
+        $scope.model.viewMode = mode;
+        $scope.model.filter = '';
     };
 
     $scope.onOpenUploadDialog = function() {
@@ -2626,16 +2623,6 @@ app.controller( 'sideBarCtrl', function( $scope, PlayerService, Model, ngDialog,
             showClose: false,
             className: 'ngdialog-theme-default upload-dialog'
         } );
-    };
-
-} );
-app.controller( 'topBarCtrl', function( $scope, Model ) {
-
-    $scope.model = Model;
-
-    $scope.onSelectMode = function( mode ) {
-        $scope.model.viewMode = mode;
-        $scope.model.filter = '';
     };
 
 } );
@@ -2678,6 +2665,19 @@ app.directive( 'player', function( PlayerService, Model ) {
             $scope.player.addEventListener( 'timeupdate', function() {
                 $scope.$digest();
             } );
+
+            $scope.onRemoveWaitingTracks = function() {
+                PlayerService.removeWaitingTracks();
+            };
+
+            $scope.onPlayRandomTracks = function() {
+                var tracks = _.shuffle( Model.tracksList ).splice( 0, 100 );
+                PlayerService.playTracks( tracks );
+            };
+
+            $scope.onShuffleWaitingTracks = function() {
+                PlayerService.shuffleWaitingTracks();
+            };
 
             $scope.onSetCurrentTime = function( e ) {
                 $scope.player.currentTime = e.offsetX * $scope.player.duration / 260;
@@ -2801,6 +2801,148 @@ app.directive( 'upload', function( UploadService, Database, Model, $rootScope, D
     };
 
 } );
+app.service( 'ArtworksService', function( $http, GapiService, Model, Database ) {
+
+    var service = {
+
+        baseUrl: 'https://api.spotify.com/v1/search',
+
+        getAllArtworks: function() {
+            this.albumCache = {};
+            this.getAlbumsArtworks( Model.tracksList.filter( function( track ) {
+                return track.albumArtwork === undefined;
+            } ) );
+            // this.artistCache = {};
+            // this.getArtistsArtworks( Model.tracksList.filter( function( track ) {
+            //     return track.artistArtwork === undefined;
+            // } ) );
+        },
+
+        getArtistsArtworks: function( tracks ) {
+            var track = tracks.shift();
+            if ( this.artistCache[ track.artist ] === undefined ) {
+                this.getArtistArtwork( track.artist ).then( function( resp ) {
+                    if ( resp.data.artists.items.length > 0 ) {
+                        var image = resp.data.artists.items[ 0 ].images[ 0 ];
+                        if ( image ) {
+                            image = image.url;
+                            this.setArtistArtwork( {
+                                track: track,
+                                artworkUrl: image,
+                                callback: function() {
+                                    if ( tracks.length > 0 ) this.getArtistsArtworks( tracks );
+                                }.bind( this )
+                            } );
+                            this.artistCache[ track.artist ] = image;
+                        } else {
+                            this.artistCache[ track.artist ] = 'No image';
+                            if ( tracks.length > 0 ) this.getArtistsArtworks( tracks );
+                        }
+                    } else {
+                        this.albumCache[ track.album ] = 'No image';
+                        if ( tracks.length > 0 ) this.getArtistsArtworks( tracks );
+                    }
+                }.bind( this ) );
+            } else if ( this.artistCache[ track.artist ] === 'No image' ) {
+                if ( tracks.length > 0 ) this.getArtistsArtworks( tracks );
+            } else {
+                this.setArtistArtwork( {
+                    track: track,
+                    artworkUrl: this.artistCache[ track.artist ],
+                    callback: function() {
+                        if ( tracks.length > 0 ) this.getArtistsArtworks( tracks );
+                    }.bind( this )
+                } );
+            }
+        },
+
+        getAlbumsArtworks: function( tracks ) {
+            var track = tracks.shift();
+            if ( this.albumCache[ track.album ] === undefined ) {
+                this.getAlbumArtwork( track.artist, track.album ).then( function( resp ) {
+                    if ( resp.data.albums.items.length > 0 ) {
+                        var image = resp.data.albums.items[ 0 ].images[ 0 ];
+                        if ( image ) {
+                            image = image.url;
+                            this.setAlbumArtwork( {
+                                track: track,
+                                artworkUrl: image,
+                                callback: function() {
+                                    if ( tracks.length > 0 ) this.getAlbumsArtworks( tracks );
+                                }.bind( this )
+                            } );
+                            this.albumCache[ track.album ] = image;
+                        } else {
+                            this.albumCache[ track.album ] = 'No image';
+                            if ( tracks.length > 0 ) this.getAlbumsArtworks( tracks );
+                        }
+                    } else {
+                        this.albumCache[ track.album ] = 'No image';
+                        if ( tracks.length > 0 ) this.getAlbumsArtworks( tracks );
+                    }
+                }.bind( this ) );
+            } else if ( this.albumCache[ track.album ] === 'No image' ) {
+                if ( tracks.length > 0 ) this.getAlbumsArtworks( tracks );
+            } else {
+                this.setArtistArtwork( {
+                    track: track,
+                    artworkUrl: this.albumCache[ track.album ],
+                    callback: function() {
+                        if ( tracks.length > 0 ) this.getAlbumsArtworks( tracks );
+                    }.bind( this )
+                } );
+            }
+        },
+
+        getArtistArtwork: function( artist ) {
+            return $http.get( this.baseUrl, {
+                params: {
+                    q: artist,
+                    type: 'artist'
+                }
+            } );
+        },
+
+        getAlbumArtwork: function( artist, album ) {
+            return $http.get( this.baseUrl, {
+                params: {
+                    q: artist + ' ' + album,
+                    type: 'album'
+                }
+            } );
+        },
+
+        setAlbumArtwork: function( o ) {
+            GapiService.drive.properties.insert( {
+                'fileId': o.track.id,
+                'resource': {
+                    'key': 'albumArtwork',
+                    'value': o.artworkUrl,
+                    'visibility': 'PRIVATE'
+                }
+            } ).execute( function( resp ) {
+                o.callback();
+            }.bind( this ) );
+        },
+
+        setArtistArtwork: function( o ) {
+            GapiService.drive.properties.insert( {
+                'fileId': o.track.id,
+                'resource': {
+                    'key': 'artistArtwork',
+                    'value': o.artworkUrl,
+                    'visibility': 'PRIVATE'
+                }
+            } ).execute( function( resp ) {
+                o.callback();
+            }.bind( this ) );
+        }
+
+    };
+
+    return service;
+
+} );
 app.service( 'Database', [ '$http', function() {
 
     var service = {
@@ -2828,7 +2970,7 @@ app.service( 'Database', [ '$http', function() {
                 keyPath: "id"
             } );
 
-            var properties = [ "title", "starred", "artist", "year", "album" ];
+            var properties = [ "title", "starred", "artist", "year", "album", "artistArtwork", "albumArtwork" ];
 
             properties.forEach( function( property ) {
                 tracksStore.createIndex( property, property, {
@@ -2887,7 +3029,7 @@ app.service( 'Database', [ '$http', function() {
     return service;
 
 } ] );
-app.service( 'DriveParserService', function( GapiService, LastFmService, Database, Model, $rootScope ) {
+app.service( 'DriveParserService', function( GapiService, ArtworksService, Database, Model, $rootScope ) {
 
     var service = {
 
@@ -2907,7 +3049,8 @@ app.service( 'DriveParserService', function( GapiService, LastFmService, Databas
             Model.artistsList = _.map( _.groupBy( Model.tracksList, 'artist' ), function( tracks ) {
                 return {
                     title: tracks[ 0 ].artist,
-                    tracks: tracks
+                    tracks: tracks,
+                    artistArtwork: tracks[ 0 ].artistArtwork
                 }
             } );
             Model.albumsList = _.map( _.groupBy( Model.tracksList, 'album' ), function( tracks ) {
@@ -2915,12 +3058,11 @@ app.service( 'DriveParserService', function( GapiService, LastFmService, Databas
                     title: tracks[ 0 ].album,
                     tracks: tracks,
                     artist: tracks[ 0 ].artist,
-                    artwork: tracks[ 0 ].albumArtwork,
+                    artistArtwork: tracks[ 0 ].artistArtwork,
                     albumArtwork: tracks[ 0 ].albumArtwork,
-                    year: tracks[ 0 ].year,
+                    year: tracks[ 0 ].year
                 }
             } );
-            LastFmService.getAllArtworks();
             $rootScope.$apply();
         },
 
@@ -2949,6 +3091,7 @@ app.service( 'DriveParserService', function( GapiService, LastFmService, Databas
                 Model.tracksList.push( track );
             } );
             this.setTracksByArtistAndAlbum();
+            ArtworksService.getAllArtworks();
             Database.addAll( Model.tracksList );
         }
 
@@ -2999,75 +3142,6 @@ app.service( 'GapiService', function() {
                     this.handleAuthResult.bind( this )
                 );
             }
-        }
-
-    };
-
-    return service;
-
-} );
-app.service( 'LastFmService', function( $http, GapiService, Model ) {
-
-    var service = {
-
-        key: '395e6ec6bb557382fc41fde867bce66f',
-
-        baseUrl: 'http://ws.audioscrobbler.com/2.0',
-
-        getAllArtworks: function() {
-            this.getAlbumsArtworks( angular.copy( Model.albumsList ) );
-        },
-
-        getAlbumsArtworks: function( albums ) {
-            var album = albums.shift();
-            if ( album.albumArtwork === undefined ) {
-                this.getAlbumArtwork( album.artist, album.title ).then( function( resp ) {
-                    if ( resp.data.results[ 'opensearch:totalResults' ] > 0 ) {
-                        var result = resp.data.results.albummatches.album[ 0 ] || resp.data.results.albummatches.album;
-                        var images = result.image
-                        this.setAlbumArtwork( {
-                            tracks: album.tracks,
-                            artworkUrl: images[ images.length - 1 ][ '#text' ],
-                            callback: function() {
-                                if ( albums.length > 0 ) this.getAlbumsArtworks( albums )
-                            }.bind( this )
-                        } );
-                    } else {
-                        if ( albums.length > 0 ) this.getAlbumsArtworks( albums )
-                    }
-                }.bind( this ) );
-            } else {
-                this.getAlbumsArtworks( albums );
-            }
-        },
-
-        getAlbumArtwork: function( artist, album ) {
-            return $http.get( this.baseUrl, {
-                params: {
-                    method: 'album.search',
-                    api_key: this.key,
-                    album: artist + ' ' + album,
-                    format: 'json'
-                }
-            } );
-        },
-
-        setAlbumArtwork: function( o ) {
-            var track = o.tracks.shift();
-            GapiService.drive.properties.insert( {
-                'fileId': track.id,
-                'resource': {
-                    'key': 'albumArtwork',
-                    'value': o.artworkUrl,
-                    'visibility': 'PRIVATE'
-                }
-            } ).execute( function( resp ) {
-                if ( o.tracks.length > 0 ) {
-                    this.setAlbumArtwork( o );
-                } else {
-                    o.callback();
-                }
-            }.bind( this ) );
         }
 
     };
@@ -3182,6 +3256,9 @@ app.service( 'PlayerService', function( NotificationsService, Model, $document )
         passToNextTrack: function() {
             if ( Model.waitingTracks.length > 0 ) {
                 this.setCurrentTrack( Model.waitingTracks.shift() );
+            } else {
+                Model.currentTrack = null;
+                this.player.src = "";
             }
         },
 
@@ -3221,8 +3298,8 @@ app.service( 'PlayerService', function( NotificationsService, Model, $document )
         notifyCurrentTrack: function() {
             $document[ 0 ].title = Model.currentTrack.title + ' - ' + Model.currentTrack.artist;
             NotificationsService.show( Model.currentTrack.title, {
-                body: 'by ' + Model.currentTrack.artist,
-                icon: 'images/cd.png'
+                body: Model.currentTrack.artist,
+                icon: Model.currentTrack.albumArtwork || './images/album-placeholder.png'
             } );
         },
 

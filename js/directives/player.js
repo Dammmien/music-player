@@ -27,6 +27,19 @@ app.directive( 'player', function( PlayerService, Model ) {
                 $scope.$digest();
             } );
 
+            $scope.onRemoveWaitingTracks = function() {
+                PlayerService.removeWaitingTracks();
+            };
+
+            $scope.onPlayRandomTracks = function() {
+                var tracks = _.shuffle( Model.tracksList ).splice( 0, 100 );
+                PlayerService.playTracks( tracks );
+            };
+
+            $scope.onShuffleWaitingTracks = function() {
+                PlayerService.shuffleWaitingTracks();
+            };
+
             $scope.onSetCurrentTime = function( e ) {
                 $scope.player.currentTime = e.offsetX * $scope.player.duration / 260;
             };

@@ -1,4 +1,4 @@
-app.service( 'DriveParserService', function( GapiService, LastFmService, Database, Model, $rootScope ) {
+app.service( 'DriveParserService', function( GapiService, ArtworksService, Database, Model, $rootScope ) {
 
     var service = {
 
@@ -18,7 +18,8 @@ app.service( 'DriveParserService', function( GapiService, LastFmService, Databas
             Model.artistsList = _.map( _.groupBy( Model.tracksList, 'artist' ), function( tracks ) {
                 return {
                     title: tracks[ 0 ].artist,
-                    tracks: tracks
+                    tracks: tracks,
+                    artistArtwork: tracks[ 0 ].artistArtwork
                 }
             } );
             Model.albumsList = _.map( _.groupBy( Model.tracksList, 'album' ), function( tracks ) {
@@ -26,12 +27,11 @@ app.service( 'DriveParserService', function( GapiService, LastFmService, Databas
                     title: tracks[ 0 ].album,
                     tracks: tracks,
                     artist: tracks[ 0 ].artist,
-                    artwork: tracks[ 0 ].albumArtwork,
+                    artistArtwork: tracks[ 0 ].artistArtwork,
                     albumArtwork: tracks[ 0 ].albumArtwork,
-                    year: tracks[ 0 ].year,
+                    year: tracks[ 0 ].year
                 }
             } );
-            LastFmService.getAllArtworks();
             $rootScope.$apply();
         },
 
@@ -60,6 +60,7 @@ app.service( 'DriveParserService', function( GapiService, LastFmService, Databas
                 Model.tracksList.push( track );
             } );
             this.setTracksByArtistAndAlbum();
+            ArtworksService.getAllArtworks();
             Database.addAll( Model.tracksList );
         }
 

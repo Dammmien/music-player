@@ -15,6 +15,9 @@ app.service( 'PlayerService', function( NotificationsService, Model, $document )
         passToNextTrack: function() {
             if ( Model.waitingTracks.length > 0 ) {
                 this.setCurrentTrack( Model.waitingTracks.shift() );
+            } else {
+                Model.currentTrack = null;
+                this.player.src = "";
             }
         },
 
@@ -54,8 +57,8 @@ app.service( 'PlayerService', function( NotificationsService, Model, $document )
         notifyCurrentTrack: function() {
             $document[ 0 ].title = Model.currentTrack.title + ' - ' + Model.currentTrack.artist;
             NotificationsService.show( Model.currentTrack.title, {
-                body: 'by ' + Model.currentTrack.artist,
-                icon: 'images/cd.png'
+                body: Model.currentTrack.artist,
+                icon: Model.currentTrack.albumArtwork || './images/album-placeholder.png'
             } );
         },
 

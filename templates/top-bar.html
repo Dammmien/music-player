@@ -1,3 +1,4 @@
+<!--
 <div ng-click="onSelectMode('tracks')" ng-class="model.viewMode === 'tracks' ? 'active view-mode' : 'view-mode'">
     Tracks [{{model.tracksList.length}}]
 </div>
@@ -17,3 +18,14 @@
 <div ng-click="onSelectMode('playlists')" ng-class="model.viewMode === 'playlists' ? 'active view-mode' : 'view-mode'">
     Playlists [{{model.playlistsList.length}}]
 </div>
+-->
+
+<span class="icon icon-cloud-upload left" ng-click="onOpenUploadDialog()" title="Upload tracks"></span>
+<span class="icon icon-replay left" ng-click="onResetApp()" title="Refresh from Drive"></span>
+
+<div class="icon icon-view-list" ng-class="{active: model.viewMode === 'tracks'}" ng-click="onSelectMode('tracks')"></div>
+<div class="icon icon-view-grid" ng-class="{active: model.viewMode === 'albums'}" ng-click="onSelectMode('albums')"></div>
+<div class="icon icon-favourite-filled" ng-class="{active: model.viewMode === 'favourites'}" ng-click="onSelectMode('favourites')"></div>
+<div class="icon icon-playlist-add" ng-class="{active: model.viewMode === 'playlists'}" ng-click="onSelectMode('playlists')"></div>
+
+<input ng-model="model.filter" type="text" class="search-input" placeholder="Search"/>

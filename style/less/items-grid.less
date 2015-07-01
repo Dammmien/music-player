@@ -5,24 +5,120 @@
     box-sizing: border-box;
     font-size: 12px;
     overflow: auto;
-    .custom-scroll-bar( #FFFFFF, #999999 );
+    .custom-scroll-bar( @light, #999999 );
     background: @light;
+    text-align: center;
 
     .item{
         display: inline-block;
         margin: 10px;
         text-align: left;
-        width: 200px;
+        width: 180px;
         padding: 10px;
         background: #FFFFFF;
         border: 1px solid @semi-light;
         position: relative;
 
-        img{
-            width: 100%;
-            height: 200px;
-            vertical-align: middle;
+        &.more{
+            text-align: center;
+            cursor: pointer;
+
+            &:hover{
+                .artwork{
+                    .overlay{
+                        background: @blue;
+                        .plus-icon{
+                            background: #FFFFFF;
+                            color: @blue;
+                        }
+                    }
+                }
+            }
+
+            .artwork{
+                .overlay{
+                    display: block;
+                    background: white;
+                    .plus-icon{
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        left: 0;
+                        margin: auto;
+                        width: 70px;
+                        height: 70px;
+                        line-height: 70px;
+                        font-size: 70px;
+                        z-index: 10;
+                        background: @blue;
+                        color: #FFFFFF;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+
+        .artwork{
+            width: 180px;
+            height: 180px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
             margin: 0 0 10px 0;
+            position: relative;
+
+            .overlay{
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background: rgba( 0, 0, 0, 0.85);
+                display: none;
+                text-align: center;
+                color: #FFFFFF;
+                line-height: 30px;
+
+                .icon-play-outline{
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    margin: auto;
+                    width: 70px;
+                    height: 70px;
+                    line-height: 70px;
+                    font-size: 70px;
+                    z-index: 10;
+                    color: rgba(255, 255, 255, 0.75);
+
+                    &:hover{
+                        color: #FFFFFF;
+                    }
+                }
+
+                .icons-container{
+                    position: absolute;
+                    height: 50px;
+                    right: 20px;
+                    bottom: 0;
+                    left: 20px;
+                    border-top: 1px solid rgba(255, 255, 255, 0.25);
+
+                    .icon{
+                        line-height: 50px;
+                        margin: 0 10px;
+                        font-size: 20px;
+                        color: rgba(255, 255, 255, 0.75);
+
+                        &:hover{
+                            color: #FFFFFF;
+                        }
+                    }
+                }
+            }
         }
 
         .title{
@@ -39,21 +135,8 @@
             white-space: nowrap;
         }
 
-        .overlay{
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            height: 200px;
-            left: 10px;
-            background: rgba( 0, 0, 0, 0.85);
-            display: none;
-            text-align: center;
-            color: #FFFFFF;
-            line-height: 30px;
-        }
-
         &:hover{
-            .overlay{
+            .artwork .overlay{
                 display: block;
             }
         }

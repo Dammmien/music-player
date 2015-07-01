@@ -1,8 +1,8 @@
 <div id="player-container">
-    <player ng-show="model.currentTrack"></player>
+    <player></player>
 </div>
 
-<ul id="waiting-tracks-container" as-sortable="sortableOptions" ng-model="model.waitingTracks">
+<ul id="waiting-tracks-container" as-sortable="sortableOptions" ng-model="model.waitingTracks" ng-if="model.waitingTracks.length > 0">
     <li ng-repeat="track in model.waitingTracks" as-sortable-item class="waiting-track">
         <div as-sortable-item-handle class="as-sortable-item-handle">
             <div class="waiting-track-title">
@@ -17,11 +17,8 @@
     </li>
 </ul>
 
-<div class="bottom-bar-container">
-    <span class="icon icon-settings" ng-click="" title="Settings"></span>
-    <span class="icon icon-shuffle" ng-click="onShuffleWaitingTracks()" title="Shuffle waiting tracks"></span>
-    <span class="icon icon-radio" ng-click="onPlayRandomTracks()" title="Play random tracks"></span>
-    <span class="icon icon-delete" ng-click="onRemoveWaitingTracks()" title="Remove waiting tracks"></span>
-    <span class="icon icon-cloud-upload" ng-click="onOpenUploadDialog()" title="Upload tracks"></span>
-    <span class="icon icon-replay" ng-click="onResetApp()" title="Refresh from Drive"></span>
+<div id="waiting-tracks-container" ng-if="model.waitingTracks.length < 1">
+    <div class="empty-message">
+        The player queue is empty.
+    </div>
 </div>
