@@ -2606,7 +2606,7 @@ app.controller( 'sideBarCtrl', function( $scope, PlayerService, Model, ngDialog,
     };
 
 } );
-app.controller( 'topBarCtrl', function( $scope, Model, ngDialog ) {
+app.controller( 'topBarCtrl', function( $scope, Model, ngDialog, PlayerService ) {
 
     $scope.model = Model;
 
@@ -2623,6 +2623,19 @@ app.controller( 'topBarCtrl', function( $scope, Model, ngDialog ) {
             showClose: false,
             className: 'ngdialog-theme-default upload-dialog'
         } );
+    };
+
+    $scope.onRemoveWaitingTracks = function() {
+        PlayerService.removeWaitingTracks();
+    };
+
+    $scope.onPlayRandomTracks = function() {
+        var tracks = _.shuffle( Model.tracksList ).splice( 0, 100 );
+        PlayerService.playTracks( tracks );
+    };
+
+    $scope.onShuffleWaitingTracks = function() {
+        PlayerService.shuffleWaitingTracks();
     };
 
 } );
@@ -2665,19 +2678,6 @@ app.directive( 'player', function( PlayerService, Model ) {
             $scope.player.addEventListener( 'timeupdate', function() {
                 $scope.$digest();
             } );
-
-            $scope.onRemoveWaitingTracks = function() {
-                PlayerService.removeWaitingTracks();
-            };
-
-            $scope.onPlayRandomTracks = function() {
-                var tracks = _.shuffle( Model.tracksList ).splice( 0, 100 );
-                PlayerService.playTracks( tracks );
-            };
-
-            $scope.onShuffleWaitingTracks = function() {
-                PlayerService.shuffleWaitingTracks();
-            };
 
             $scope.onSetCurrentTime = function( e ) {
                 $scope.player.currentTime = e.offsetX * $scope.player.duration / 260;
@@ -3154,7 +3154,7 @@ app.service( 'MainService', function( GapiService, NotificationsService, Notific
     var service = {
 
         init: function() {
-            GapiService.checkAuth( this.whenIsAuthenticated.bind( this ) );
+            GapiService.checkAuth( this.whenIsAuthenticated.bind( this ), true );
         },
 
         whenIsAuthenticated: function() {

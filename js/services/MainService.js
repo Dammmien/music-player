@@ -3,7 +3,7 @@ app.service( 'MainService', function( GapiService, NotificationsService, Notific
     var service = {
 
         init: function() {
-            GapiService.checkAuth( this.whenIsAuthenticated.bind( this ) );
+            GapiService.checkAuth( this.whenIsAuthenticated.bind( this ), true );
         },
 
         whenIsAuthenticated: function() {

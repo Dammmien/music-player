@@ -20,6 +20,9 @@
 </div>
 -->
 
+<span class="icon icon-shuffle left" ng-click="onShuffleWaitingTracks()" title="Shuffle waiting tracks" ng-if="model.waitingTracks.length > 1"></span>
+<span class="icon icon-radio left" ng-click="onPlayRandomTracks()" title="Play random tracks"></span>
+<span class="icon icon-delete left" ng-click="onRemoveWaitingTracks()" title="Remove waiting tracks" ng-if="model.waitingTracks.length > 1"></span>
 <span class="icon icon-cloud-upload left" ng-click="onOpenUploadDialog()" title="Upload tracks"></span>
 <span class="icon icon-replay left" ng-click="onResetApp()" title="Refresh from Drive"></span>
 
